@@ -1,0 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar CSS */
+.navbar-menu a{
+    color: #003049;
+}
+.navbar-menu a.active{
+    color: #f77f00;
+}
