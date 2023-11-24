@@ -3,6 +3,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Inter', sans-serif;
 }
 
 .norican {
@@ -58,8 +59,13 @@
     color: #fff;
 }
 
-/* Meals Category Tab */
-/* .category-tab{
-    background-color: white !important;
-} */
-
+/* React Awesome Button */
+.aws-btn--primary .aws-btn__content {
+    background: #f77f00 !important;
+}
+.aws-btn--primary .aws-btn__wrapper:before {
+    background: #a55601 !important;
+}
+.aws-btn{
+    --button-raise-level: 6px !important;
+}

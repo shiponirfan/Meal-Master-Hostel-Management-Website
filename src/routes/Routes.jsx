@@ -3,6 +3,8 @@ import Main from "../layouts/Main";
 import Home from "../pages/Home/Home";
 import Meals from "../pages/Meals/Meals";
 import UpcomingMeals from "../pages/UpcomingMeals/UpcomingMeals";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
 
 const Routes = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const Routes = createBrowserRouter([
         element: <UpcomingMeals />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 

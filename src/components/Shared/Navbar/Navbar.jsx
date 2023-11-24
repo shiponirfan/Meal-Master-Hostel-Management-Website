@@ -21,6 +21,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import styled from "@emotion/styled";
+import useAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -32,8 +34,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 function Navbar() {
-  // TODO: Import User From useAuth
-  const user = true;
+  const { user, userLogOut } = useAuth();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
@@ -51,6 +52,27 @@ function Navbar() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    userLogOut().then(() => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Logout Successfully",
+      });
+    });
+    handleClose();
   };
 
   return (
@@ -161,7 +183,7 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             {/* Cart Icon */}
-            <IconButton sx={{ mr: 1 }} aria-label="cart">
+            <IconButton sx={{ mr: 2 }} aria-label="cart">
               <StyledBadge badgeContent={4} color="primary">
                 <ShoppingCartIcon />
               </StyledBadge>
@@ -263,7 +285,7 @@ function Navbar() {
                   Dashboard
                 </MenuItem>
               </Link>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

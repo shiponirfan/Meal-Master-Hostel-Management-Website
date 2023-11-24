@@ -3,7 +3,6 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const useMeals = ({ mealType,mealTitle,sort,pages,limit }) => {
   const axiosPublic = useAxiosPublic();
-  console.log(mealType);
   const { refetch, data: meals = [], isLoading } = useQuery({
     queryKey: ["meals"],
     queryFn: async () => {
