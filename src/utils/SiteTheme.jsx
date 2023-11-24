@@ -16,12 +16,12 @@ const theme = createTheme({
     fontFamily: "Inter, sans-serif",
   },
 });
-const Themes = ({ children }) => {
+const SiteTheme = ({ children }) => {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 
-Themes.propTypes = {
+SiteTheme.propTypes = {
   children: PropTypes.node,
 };
 
-export default Themes;
+export default SiteTheme;
