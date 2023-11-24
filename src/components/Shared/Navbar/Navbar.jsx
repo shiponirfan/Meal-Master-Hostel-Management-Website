@@ -15,30 +15,42 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { Badge, Divider, Stack } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import StoreIcon from "@mui/icons-material/Store";
-import LogoutIcon from "@mui/icons-material/Logout";
 const pages = ["Meals", "Upcoming Meals"];
+
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
+import styled from "@emotion/styled";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
 
 function Navbar() {
   // TODO: Import User From useAuth
   const user = true;
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -149,24 +161,26 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             {/* Cart Icon */}
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              sx={{ mr: 2, display: { xs: "none", md: "inline-block" } }}
-            >
-              <Badge badgeContent={18} color="error">
+            <IconButton sx={{ mr: 1 }} aria-label="cart">
+              <StyledBadge badgeContent={4} color="primary">
                 <ShoppingCartIcon />
-              </Badge>
+              </StyledBadge>
             </IconButton>
+
             {/* User Profile & Login Button */}
             {user ? (
               <Tooltip title="Profile">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton
+                  onClick={handleClick}
+                  size="small"
+                  aria-controls={open ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                >
                   <Avatar
-                    alt="Remy Sharp"
+                    alt="user profile"
                     src={user?.photoURL ? user.photoURL : ""}
-                  />
+                  ></Avatar>
                 </IconButton>
               </Tooltip>
             ) : (
@@ -182,52 +196,78 @@ function Navbar() {
 
             {/* User Profile Dropdown */}
             <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <Stack sx={{ px: 2, py: 0.75 }}>
-                <Typography>
-                  {user?.displayName ? user?.displayName : "User Name"}
-                </Typography>
-                <Typography variant="body2">
-                  {user?.email ? user?.email : "User Email"}
-                </Typography>
-                <Divider sx={{ pt: 1 }} />
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                sx={{ px: 2, py: 0.75 }}
+              >
+                <Avatar
+                  alt="user profile"
+                  src={user?.photoURL ? user.photoURL : ""}
+                ></Avatar>
+                <Stack>
+                  <Typography>
+                    {user?.displayName ? user?.displayName : "User Name"}
+                  </Typography>
+                  <Typography variant="body2">
+                    {user?.email ? user?.email : "User Email"}
+                  </Typography>
+                </Stack>
               </Stack>
+              <Divider />
               <Link
                 style={{
                   textDecoration: "none",
-                  color: "#003049",
-                  fontWeight: 500,
+                  color: "rgba(0, 0, 0, 0.87)",
                 }}
                 to="/dashboard"
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <StoreIcon sx={{ mr: 1 }} />
-                  <Typography textAlign="center">Dashboard</Typography>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Dashboard
                 </MenuItem>
               </Link>
-
-              <MenuItem
-                style={{
-                  color: "#003049",
-                }}
-                onClick={handleCloseUserMenu}
-              >
-                <LogoutIcon sx={{ mr: 1 }} />
-                <Typography textAlign="center">Logout</Typography>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
               </MenuItem>
             </Menu>
           </Box>

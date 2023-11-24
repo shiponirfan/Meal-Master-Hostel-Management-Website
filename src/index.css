@@ -10,3 +10,45 @@
 .navbar-menu a.active{
     color: #f77f00;
 }
+
+/* Banner Slider */
+.banner-slider .swiper-button-next,
+.banner-slider .swiper-button-prev {
+    position: absolute;
+    background-color: white;
+    z-index: 999;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all .3s ;
+}
+.banner-slider .swiper-button-next{
+    right: -100px;
+    transition: all .3s ;
+}
+.banner-slider .swiper-button-prev{
+    left: -100px;
+    transition: all .3s ;
+}
+.banner-slider:hover .swiper-button-next{
+    right: 30px;
+    
+}
+.banner-slider:hover .swiper-button-prev{
+    left: 30px;
+}
+.banner-slider .swiper-button-prev:after, .swiper-button-next:after{
+    font-size: 20px !important;
+    font-weight: bold;
+    color: #f77f00;
+    transition: all .3s ;
+}
+.banner-slider .swiper-button-next:hover,
+.banner-slider .swiper-button-prev:hover {
+    background-color: #f77f00;
+}
+.banner-slider .swiper-button-prev:hover:after, .swiper-button-next:hover:after{
+    color: #fff;
+}
+

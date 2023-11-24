@@ -1,9 +1,11 @@
+import { Stack } from "@mui/material";
+import BannerSlider from "../../components/Home/BannerSlider/BannerSlider";
 
 const Home = () => {
     return (
-        <div>
-            <h2>Home</h2>
-        </div>
+        <Stack>
+            <BannerSlider/>
+        </Stack>
     );
 };
 
