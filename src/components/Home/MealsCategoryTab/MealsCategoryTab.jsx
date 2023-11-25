@@ -1,11 +1,12 @@
-import { Container, Grid, Stack, Typography } from "@mui/material";
+import { Container, Grid, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import MealsCategoryCard from "../../Shared/MealsCategoryCard/MealsCategoryCard";
 import useMeals from "../../../api/useMeals";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "../../Shared/LoadingSpinner/LoadingSpinner";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "./../../Shared/LoadingSpinner";
+import HeadingTitle from "../../Shared/HeadingTitle";
 const MealsCategoryTab = () => {
   const [mealTypeTab, setMealTypeTab] = useState("");
   const mealType = mealTypeTab;
@@ -18,34 +19,13 @@ const MealsCategoryTab = () => {
       <Container maxWidth={"xl"}>
         <Stack sx={{ alignItems: "center" }}>
           {/* Heading Title */}
-          <Stack sx={{ mb: 5, alignItems: "center" }}>
-            <Typography
-              className="norican"
-              variant="h1"
-              fontWeight={700}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "1.5rem",
-                mb: 1,
-              }}
-            >
-              Special{" "}
-              <Typography
-                className="norican"
-                variant="h1"
-                component="span"
-                fontWeight={700}
-                color={"primary"}
-              >
-                Dishes
-              </Typography>
-            </Typography>
-            <Typography variant="body1">
-              Crafted with exceptional flavors to enhance your dining journey
-            </Typography>
-          </Stack>
+          <HeadingTitle
+            titleOne={"Special"}
+            titleSecond={"Dishes"}
+            desc={
+              "Crafted with exceptional flavors to enhance your dining journey"
+            }
+          />
 
           {/* Tab Button */}
           <ButtonGroup variant="outlined" aria-label="meals Category">

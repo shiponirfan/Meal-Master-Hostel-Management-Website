@@ -7,7 +7,6 @@ import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AwesomeButton } from "react-awesome-button";
-import GoogleIcon from "@mui/icons-material/Google";
 import { Button, Divider, Stack } from "@mui/material";
 import logo from "../../assets/logo.png";
 import loginIcon from "../../assets/icons/signup.png";
@@ -17,6 +16,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import SocialLogin from "../../components/Shared/SocialLogin";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -250,13 +250,7 @@ const Register = () => {
                 </Box>
                 <Box maxWidth="xs">
                   <Divider sx={{ my: 1.5 }}>OR SIGN UP WITH GOOGLE</Divider>
-                  <AwesomeButton
-                    style={{ width: "100%", marginBottom: "10px" }}
-                    type="secondary"
-                    after={<GoogleIcon />}
-                  >
-                    Sign Up With Google
-                  </AwesomeButton>
+                  <SocialLogin />
                   <Link
                     style={{ color: "#f77f55", fontWeight: 700 }}
                     to="/login"

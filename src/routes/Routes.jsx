@@ -5,6 +5,11 @@ import Meals from "../pages/Meals/Meals";
 import UpcomingMeals from "../pages/UpcomingMeals/UpcomingMeals";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import PrivateRoute from "./PrivateRoute";
+import Dashboard from "../layouts/Dashboard/Dashboard";
+import MyProﬁle from "../pages/Dashboard/MyProﬁle/MyProﬁle";
+import MyReviews from "../pages/Dashboard/MyReviews/MyReviews";
+import RequestedMeals from "../pages/Dashboard/RequestedMeals.jsx/RequestedMeals";
 
 const Routes = createBrowserRouter([
   {
@@ -32,6 +37,30 @@ const Routes = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
+    children: [
+      // User Dashboard Routes
+      {
+        path: "profile",
+        element: <MyProﬁle />,
+      },
+      {
+        path: "reviews",
+        element: <MyReviews />,
+      },
+      {
+        path: "requested-meals",
+        element: <RequestedMeals />,
+      },
+      // TODO: Admin Dashboard Routes
+    ],
   },
 ]);
 

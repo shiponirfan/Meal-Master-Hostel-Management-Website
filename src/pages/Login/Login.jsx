@@ -7,12 +7,12 @@ import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AwesomeButton } from "react-awesome-button";
-import GoogleIcon from "@mui/icons-material/Google";
 import { Divider, Stack } from "@mui/material";
 import logo from "../../assets/logo.png";
 import loginIcon from "../../assets/icons/login.png";
 import useAuth from "./../../hooks/useAuth";
 import Swal from "sweetalert2";
+import SocialLogin from "../../components/Shared/SocialLogin";
 
 export default function Login() {
   const { userLogin } = useAuth();
@@ -130,13 +130,7 @@ export default function Login() {
                 </Box>
                 <Box maxWidth="xs">
                   <Divider sx={{ my: 1.5 }}>OR LOGIN WITH GOOGLE</Divider>
-                  <AwesomeButton
-                    style={{ width: "100%", marginBottom: "10px" }}
-                    type="secondary"
-                    after={<GoogleIcon />}
-                  >
-                    Login With Google
-                  </AwesomeButton>
+                  <SocialLogin />
                   <Link
                     style={{ color: "#f77f55", fontWeight: 700 }}
                     to="/register"
