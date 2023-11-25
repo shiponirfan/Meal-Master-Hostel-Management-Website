@@ -51,23 +51,21 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-    //   setLoading(true);
-    //   // JWT Token
-    //   const userEmail = currentUser?.email || user?.email;
-    //   const loggedUser = { email: userEmail };
-    //   if (userEmail) {
-    //     axiosPublic.post("/auth/access-token", loggedUser).then((res) => {
-    //       console.log(res.data);
-    //       setLoading(false);
-    //     });
-    //   } else {
-    //     axiosPublic.post("/auth/access-cancel", loggedUser).then((res) => {
-    //       console.log(res.data);
-    //       userLogOut().then(() => {});
-    //       setLoading(false);
-    //     });
-    //   }
-      setLoading(false);
+      setLoading(true);
+      // JWT Token
+      const userEmail = currentUser?.email || user?.email;
+      const loggedUser = { email: userEmail };
+      if (userEmail) {
+        axiosPublic.post("/auth/access-token", loggedUser).then(() => {
+          setLoading(false);
+        });
+      } 
+      else {
+        axiosPublic.post("/auth/access-cancel", loggedUser).then(() => {
+          userLogOut();
+          setLoading(false);
+        });
+      }
     });
     return () => {
       unSubscribe();

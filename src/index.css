@@ -69,3 +69,6 @@
 .aws-btn{
     --button-raise-level: 6px !important;
 }
+.like-btn.aws-btn{
+    --button-horizontal-padding: 40px !important;
+}
