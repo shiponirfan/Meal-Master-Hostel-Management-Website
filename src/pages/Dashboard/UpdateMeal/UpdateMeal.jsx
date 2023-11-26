@@ -24,7 +24,9 @@ import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+import useMealDetails from "../../../api/useMealDetails";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const myStyles = {
@@ -44,9 +46,11 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 const UpdateMeal = () => {
+  const { id } = useParams();
+  const [mealDetails, isLoading] = useMealDetails(id);
   const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [mealType, setMealType] = useState("");
+  const [mealTypes, setMealTypes] = useState("");
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [rating, setRating] = useState(0);
@@ -57,17 +61,21 @@ const UpdateMeal = () => {
     formState: { errors },
   } = useForm();
 
-  const { mutate: addMeal } = useMutation({
-    mutationKey: ["addMeal", user?.email],
+  const { mutate: UpdateMealData } = useMutation({
+    mutationKey: ["UpdateMealData", user?.email],
     mutationFn: async (mealData) => {
-      return await axiosSecure.post("/meal", mealData);
+      return await axiosSecure.patch(`/update-meal/${id}`, mealData);
     },
     onSuccess: () => {
-      toast.success("Meal Added Successfully!");
+      Swal.fire({
+        title: "Success",
+        text: "Meal Update Successfully!",
+        icon: "success",
+      });
     },
   });
-  const [submitTypes, setSubmitTypes] = useState("");
-  if (loading) {
+
+  if (loading || isLoading) {
     return <LoadingSpinner />;
   }
 
@@ -86,40 +94,37 @@ const UpdateMeal = () => {
   ];
 
   const onSubmit = async (data) => {
-
+    let mealUpdatedImg = "";
     const imageFile = { image: data.mealImage[0] };
-    const imageRes = await axios.post(image_hosting_api, imageFile, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    if (imageRes.data.success) {
-      const mealData = {
-        mealTitle: data.MealTitle,
-        mealType: data.MealType,
-        mealImage: imageRes.data.data.display_url,
-        ingredients: mealIngredientsData,
-        description: data.Description,
-        price: parseInt(data.Price),
-        rating: rating,
-        dateTime: new Date(),
-        likes: parseInt(data.Likes),
-        reviews: [],
-        adminName: data.DistributorName,
-        adminEmail: data.DistributorEmail,
-      };
 
-      if (submitTypes === "addMeal") {
-        addMeal(mealData);
-      }
-
-      if (submitTypes === "upcoming") {
-        // addMeal(mealData);
-      }
-
+    if (imageFile.image) {
+      const imageRes = await axios.post(image_hosting_api, imageFile, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      mealUpdatedImg = imageRes.data.data.display_url;
     }
-  };
 
+    const mealData = {
+      mealTitle: data.MealTitle,
+      mealType: data.MealType,
+      mealImage: mealUpdatedImg ? mealUpdatedImg : mealDetails?.mealImage,
+      ingredients: mealIngredientsData
+        ? mealIngredientsData
+        : mealDetails?.ingredients,
+      description: data.Description,
+      price: parseInt(data.Price),
+      rating: rating ? rating : mealDetails?.rating,
+      dateTime: new Date(),
+      likes: parseInt(data.Likes),
+      reviews: mealDetails?.reviews,
+      adminName: data.DistributorName,
+      adminEmail: data.DistributorEmail,
+    };
+
+    UpdateMealData(mealData);
+  };
   return (
     <Stack>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
@@ -131,6 +136,7 @@ const UpdateMeal = () => {
             id="MealTitle"
             label="Meal Title"
             name="MealTitle"
+            defaultValue={mealDetails?.mealTitle}
             autoFocus
             {...register("MealTitle", { required: true })}
           />
@@ -151,9 +157,9 @@ const UpdateMeal = () => {
           <Select
             labelId="MealType"
             id="MealType"
-            value={mealType}
+            value={!mealTypes ? mealDetails?.mealType : mealTypes}
             {...register("MealType", { required: true })}
-            onChange={(e) => setMealType(e.target.value)}
+            onChange={(e) => setMealTypes(e.target.value)}
           >
             <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
             <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -180,6 +186,11 @@ const UpdateMeal = () => {
             options={ingredients}
             disableCloseOnSelect
             getOptionLabel={(option) => option}
+            defaultValue={
+              !mealIngredientsData
+                ? mealDetails?.ingredients
+                : mealIngredientsData
+            }
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 <Checkbox
@@ -203,16 +214,6 @@ const UpdateMeal = () => {
               />
             )}
           />
-          {errors.Ingredients && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Ingredients is required
-            </Typography>
-          )}
         </FormControl>
 
         <FormControl variant="filled" sx={{ width: "100%" }}>
@@ -224,6 +225,7 @@ const UpdateMeal = () => {
             label="Price"
             name="Price"
             type="number"
+            defaultValue={mealDetails?.price}
             autoFocus
             {...register("Price", { required: true })}
           />
@@ -249,7 +251,7 @@ const UpdateMeal = () => {
             name="Likes"
             type="number"
             autoFocus
-            defaultValue={0}
+            defaultValue={mealDetails?.likes}
             {...register("Likes")}
           />
         </FormControl>
@@ -264,7 +266,7 @@ const UpdateMeal = () => {
             name="Reviews"
             type="number"
             autoFocus
-            defaultValue={0}
+            defaultValue={mealDetails?.reviews?.length}
             {...register("Reviews")}
           />
         </FormControl>
@@ -278,7 +280,7 @@ const UpdateMeal = () => {
             label="Distributor Name"
             name="DistributorName"
             autoFocus
-            defaultValue={user?.displayName}
+            defaultValue={mealDetails?.adminName}
             {...register("DistributorName")}
           />
         </FormControl>
@@ -292,7 +294,7 @@ const UpdateMeal = () => {
             label="Distributor Email"
             name="DistributorEmail"
             autoFocus
-            defaultValue={user?.email}
+            defaultValue={mealDetails?.adminEmail}
             {...register("DistributorEmail")}
           />
         </FormControl>
@@ -305,7 +307,8 @@ const UpdateMeal = () => {
             margin="normal"
             rows={4}
             variant="filled"
-            {...register("Description")}
+            defaultValue={mealDetails?.description}
+            {...register("Description", { required: true })}
           />
           {errors.Description && (
             <Typography
@@ -314,29 +317,38 @@ const UpdateMeal = () => {
               sx={{ fontSize: "1rem" }}
               color={"secondary"}
             >
-              Meal Title is required
+              Description Title is required
             </Typography>
           )}
         </FormControl>
 
+        <Stack direction={"row"} alignItems={"center"}>
+          <Button
+            sx={{ mt: 0.5, textTransform: "none" }}
+            component="label"
+            variant="outlined"
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload Profile Image
+            <VisuallyHiddenInput {...register("mealImage")} type="file" />
+          </Button>
+        </Stack>
+
+        <Stack direction={"row"} spacing={1} alignItems={"center"}>
+          <Typography variant="h6" fontWeight={700}>
+            Add Rating:
+          </Typography>
+          <Rating
+            style={{ maxWidth: 250 }}
+            itemStyles={myStyles}
+            value={rating ? rating : mealDetails?.rating}
+            onChange={setRating}
+          />
+        </Stack>
+
         <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
-          <AwesomeButton
-            onPress={() => {
-              setSubmitTypes("addMeal");
-            }}
-            style={{ width: "100%" }}
-            type="primary"
-          >
-            Add Meal
-          </AwesomeButton>
-          <AwesomeButton
-            onPress={() => {
-              setSubmitTypes("upcoming");
-            }}
-            style={{ width: "100%" }}
-            type="secondary"
-          >
-            Add To Upcoming Meal
+          <AwesomeButton style={{ width: "100%" }} type="primary">
+            Update Meal
           </AwesomeButton>
         </Stack>
       </Box>

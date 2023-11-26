@@ -24,7 +24,7 @@ import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const myStyles = {
@@ -55,6 +55,7 @@ const AddMeal = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -64,7 +65,12 @@ const AddMeal = () => {
       return await axiosSecure.post("/meal", mealData);
     },
     onSuccess: () => {
-      toast.success("Meal Added Successfully!");
+      reset();
+      Swal.fire({
+        title: "Success",
+        text: "Meal Added Successfully!",
+        icon: "success",
+      });
     },
   });
   const { mutate: addUpcomingMeal } = useMutation({
@@ -73,7 +79,12 @@ const AddMeal = () => {
       return await axiosSecure.post("/upcoming-meal", mealUpcomingData);
     },
     onSuccess: () => {
-      toast.success("Upcoming Meal Added Successfully!");
+      reset();
+      Swal.fire({
+        title: "Success",
+        text: "Upcoming Meal Added Successfully!",
+        icon: "success",
+      });
     },
   });
 
@@ -211,16 +222,6 @@ const AddMeal = () => {
               />
             )}
           />
-          {errors.Ingredients && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Ingredients is required
-            </Typography>
-          )}
         </FormControl>
 
         <FormControl variant="filled" sx={{ width: "100%" }}>
@@ -313,7 +314,7 @@ const AddMeal = () => {
             margin="normal"
             rows={4}
             variant="filled"
-            {...register("Description")}
+            {...register("Description", { required: true })}
           />
           {errors.Description && (
             <Typography
@@ -322,7 +323,7 @@ const AddMeal = () => {
               sx={{ fontSize: "1rem" }}
               color={"secondary"}
             >
-              Meal Title is required
+              Description Title is required
             </Typography>
           )}
         </FormControl>
