@@ -12,6 +12,7 @@ import MyReviews from "../pages/Dashboard/MyReviews/MyReviews";
 import RequestedMeals from "../pages/Dashboard/RequestedMeals.jsx/RequestedMeals";
 import MealDetails from "../pages/MealDetails/MealDetails";
 import MembershipPage from "../pages/MembershipPage/MembershipPage";
+import Checkout from "../pages/Checkout/Checkout";
 
 const Routes = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ const Routes = createBrowserRouter([
         element: <UpcomingMeals />,
       },
       {
-        path: "/meal/:id",
+        path: "meal/:id",
         element: (
           <PrivateRoute>
             <MealDetails />
@@ -39,10 +40,18 @@ const Routes = createBrowserRouter([
         ),
       },
       {
-        path: "/membership",
+        path: "membership",
         element: (
           <PrivateRoute>
             <MembershipPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "checkout/:id",
+        element: (
+          <PrivateRoute>
+            <Checkout />
           </PrivateRoute>
         ),
       },

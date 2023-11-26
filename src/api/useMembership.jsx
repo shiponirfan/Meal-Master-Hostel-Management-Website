@@ -4,7 +4,6 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 const useMembership = () => {
   const axiosPublic = useAxiosPublic();
   const {
-    refetch,
     data: membershipData = [],
     isLoading,
   } = useQuery({
@@ -15,7 +14,7 @@ const useMembership = () => {
     },
   });
 
-  return [membershipData, refetch, isLoading];
+  return [membershipData, isLoading];
 };
 
 export default useMembership;
