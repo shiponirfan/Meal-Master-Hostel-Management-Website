@@ -8,6 +8,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { AwesomeButton } from "react-awesome-button";
 import CloseIcon from "@mui/icons-material/Close";
+import useRequestedMeals from "../../../api/useRequestedMeals";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,27 +32,55 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 
-
-// TODO: Fatch Data Form SErver
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 export default function RequestedMeals() {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [requestedMeal, requestedMealsLoading, requestedMealRefetch] =
+    useRequestedMeals();
+
+  const { mutate: mealCancel } = useMutation({
+    mutationKey: ["mealCancel", user?.email],
+    mutationFn: async (id) => {
+      return await axiosSecure.delete(
+        `/auth/requested-meal/${id}?email=${user?.email}`
+      );
+    },
+    onSuccess: () => {
+      requestedMealRefetch();
+      Swal.fire({
+        title: "Cancelled!",
+        text: "Your file has been cancelled.",
+        icon: "success",
+      });
+    },
+  });
+
+  const handleMealCancel = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "Close",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mealCancel(id);
+      }
+    });
+  };
+
+  if (requestedMealsLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <TableContainer component={Paper} sx={{ mt: 12 }}>
       <Table sx={{ minWidth: 700 }} aria-label="Requested Meals">
@@ -59,16 +94,30 @@ export default function RequestedMeals() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {requestedMeal.map((meal) => (
+            <StyledTableRow key={meal.requestedMealStatus.requestedMealId}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                <Link
+                  style={{ textDecoration: "none", color: "#000000de" }}
+                  to={`/meal/${meal._id}`}
+                >
+                  {meal.mealTitle}
+                </Link>
               </StyledTableCell>
-              <StyledTableCell align="center">{row.calories}</StyledTableCell>
-              <StyledTableCell align="center">{row.fat}</StyledTableCell>
-              <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+              <StyledTableCell align="center">{meal.likes}</StyledTableCell>
               <StyledTableCell align="center">
-                <AwesomeButton type="danger">
+                {meal.reviews?.length}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {meal.requestedMealStatus.status}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <AwesomeButton
+                  onPress={() =>
+                    handleMealCancel(meal.requestedMealStatus.requestedMealId)
+                  }
+                  type="danger"
+                >
                   <CloseIcon />
                   CANCEL
                 </AwesomeButton>

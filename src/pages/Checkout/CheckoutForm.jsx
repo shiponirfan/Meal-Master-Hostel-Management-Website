@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const CheckoutForm = ({ selectedPackage }) => {
   const axiosSecure = useAxiosSecure();
@@ -56,7 +57,11 @@ const CheckoutForm = ({ selectedPackage }) => {
       });
     },
     onSuccess: () => {
-      toast.success("Payment Successful");
+      Swal.fire({
+        title: "Payment Successful",
+        text: `You Received A ${selectedPackage.title} Badge`,
+        icon: "success",
+      });
       QueryClient.invalidateQueries({ queryKey: ["userRole", user?.email] });
     },
   });

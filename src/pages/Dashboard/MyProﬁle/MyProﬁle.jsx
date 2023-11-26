@@ -1,11 +1,28 @@
 import { Avatar, Box, Paper, Stack, Typography } from "@mui/material";
 import useAuth from "./../../../hooks/useAuth";
 import bronzeBadge from "../../../assets/icons/bronzebadge.png";
-// import goldBadge from "../../../assets/icons/goldbadge.png";
+import goldBadge from "../../../assets/icons/goldbadge.png";
+import platinumBadge from "../../../assets/icons/platinumbadge.png";
 import Badge from "@mui/material/Badge";
+import useUserRole from "./../../../api/useUserRole";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import usePaymentHistory from "../../../api/usePaymentHistory";
+import useRequestedMeals from "../../../api/useRequestedMeals";
 
 const MyProﬁle = () => {
   const { user } = useAuth();
+  const [userRole] = useUserRole();
+  const [paymentHistory, paymentLoading] = usePaymentHistory();
+  const [requestedMeal, requestedMealsLoading] = useRequestedMeals();
+
+  if (paymentLoading || requestedMealsLoading) {
+    return <LoadingSpinner />;
+  }
+  const totalSpend = paymentHistory.reduce(
+    (total, item) => total + item.price,
+    0
+  );
+
   return (
     <Stack
       sx={{
@@ -30,8 +47,16 @@ const MyProﬁle = () => {
                 borderRadius: "100px",
               }}
             >
-              {/* TODO: Add Conditional Badge */}
-              <Avatar sx={{ width: 60, height: 60 }} src={bronzeBadge} />
+              <Avatar
+                sx={{ width: 60, height: 60 }}
+                src={
+                  userRole.userBadge === "Platinum-Badge"
+                    ? platinumBadge
+                    : userRole.userBadge === "Gold-Badge"
+                    ? goldBadge
+                    : bronzeBadge
+                }
+              />
             </Paper>
           }
         >
@@ -63,13 +88,13 @@ const MyProﬁle = () => {
         >
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              $0
+              ${totalSpend > 0 ? totalSpend : 0}
             </Typography>
             <Typography variant="h6">Total Spend</Typography>
           </Paper>
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              0
+              {requestedMeal?.length > 0 ? requestedMeal?.length : 0}
             </Typography>
             <Typography variant="h6">Requested Meals</Typography>
           </Paper>
