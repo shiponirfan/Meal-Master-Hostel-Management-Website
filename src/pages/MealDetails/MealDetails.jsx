@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "./../../components/Shared/LoadingSpinner";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -19,6 +19,7 @@ import useUserRole from "../../api/useUserRole";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import useMealDetails from "../../api/useMealDetails";
 
 const MealDetails = () => {
   const { id } = useParams();
@@ -28,14 +29,7 @@ const MealDetails = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [requestedMealInfo, setRequestedMealInfo] = useState("");
-
-  const { data: mealDetails, isLoading } = useQuery({
-    queryKey: ["mealDetails"],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/meal/${id}`);
-      return res.data;
-    },
-  });
+  const [mealDetails, isLoading] = useMealDetails(id);
 
   const { mutate: likeUpdate } = useMutation({
     mutationKey: ["likeUpdate"],
