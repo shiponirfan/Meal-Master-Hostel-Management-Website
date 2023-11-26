@@ -13,6 +13,15 @@ import RequestedMeals from "../pages/Dashboard/RequestedMeals.jsx/RequestedMeals
 import MealDetails from "../pages/MealDetails/MealDetails";
 import MembershipPage from "../pages/MembershipPage/MembershipPage";
 import Checkout from "../pages/Checkout/Checkout";
+import AdminRoute from "./AdminRoute";
+import AdminProﬁle from "../pages/Dashboard/AdminProﬁle/AdminProﬁle";
+import ManageUsers from "./../pages/Dashboard/ManageUsers/ManageUsers";
+import AddMeal from "./../pages/Dashboard/AddMeal/AddMeal";
+import AllReviews from "../pages/Dashboard/AllReviews/AllReviews";
+import ServeMeals from "../pages/Dashboard/ServeMeals/ServeMeals";
+import AdminUpcomingMeals from "../pages/Dashboard/AdminUpcomingMeals/AdminUpcomingMeals";
+import AllMeals from "./../pages/Dashboard/AllMeals/AllMeals";
+import UpdateMeal from "../pages/Dashboard/UpdateMeal/UpdateMeal";
 
 const Routes = createBrowserRouter([
   {
@@ -86,7 +95,71 @@ const Routes = createBrowserRouter([
         path: "requested-meals",
         element: <RequestedMeals />,
       },
-      // TODO: Admin Dashboard Routes
+      // Admin Dashboard Routes
+      {
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <AdminProﬁle />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-meal",
+        element: (
+          <AdminRoute>
+            <AddMeal />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin-all-meals",
+        element: (
+          <AdminRoute>
+            <AllMeals />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "all-reviews",
+        element: (
+          <AdminRoute>
+            <AllReviews />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "serve-meals",
+        element: (
+          <AdminRoute>
+            <ServeMeals />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin-upcoming-meals",
+        element: (
+          <AdminRoute>
+            <AdminUpcomingMeals />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "update-meal/:id",
+        element: (
+          <AdminRoute>
+            <UpdateMeal />
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ]);

@@ -7,11 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { AwesomeButton } from "react-awesome-button";
-import CloseIcon from "@mui/icons-material/Close";
-import useRequestedMeals from "../../../api/useRequestedMeals";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
-import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
@@ -37,47 +34,54 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function RequestedMeals() {
+export default function ManageUsers() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [requestedMeal, requestedMealsLoading, requestedMealRefetch] =
-    useRequestedMeals();
+  const {
+    data: allUsers = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["allUsers", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/auth/users");
+      return res.data;
+    },
+  });
 
-  const { mutate: mealCancel } = useMutation({
-    mutationKey: ["mealCancel", user?.email],
+  const { mutate: makeAdmin } = useMutation({
+    mutationKey: ["makeAdmin", user?.email],
     mutationFn: async (id) => {
-      return await axiosSecure.delete(
-        `/auth/requested-meal/${id}?email=${user?.email}`
-      );
+      return await axiosSecure.patch(`/auth/make-admin/${id}`);
     },
     onSuccess: () => {
-      requestedMealRefetch();
+      refetch();
       Swal.fire({
-        title: "Canceled!",
-        text: "Your file has been canceled.",
+        title: "Success",
+        text: "User Role Updated To Admin Successfully",
         icon: "success",
       });
     },
   });
 
-  const handleMealCancel = (id) => {
+  const handleMakeAdmin = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "You Want To Make Admin",
+      text: "Admin User Can Access All Of Admin Features",
       icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Close",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!",
+      confirmButtonText: "Yes, Make Admin",
     }).then((result) => {
       if (result.isConfirmed) {
-        mealCancel(id);
+        makeAdmin(id);
       }
     });
   };
 
-  if (requestedMealsLoading) {
+  if (isLoading) {
     return <LoadingSpinner />;
   }
 
@@ -86,40 +90,32 @@ export default function RequestedMeals() {
       <Table sx={{ minWidth: 700 }} aria-label="Requested Meals">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Meal Title</StyledTableCell>
-            <StyledTableCell align="center">Likes Count</StyledTableCell>
-            <StyledTableCell align="center">Reviews Count</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell align="center">Action</StyledTableCell>
+            <StyledTableCell>User Name</StyledTableCell>
+            <StyledTableCell align="center">User Email</StyledTableCell>
+            <StyledTableCell align="center">
+              Subscription Status
+            </StyledTableCell>
+            <StyledTableCell align="center">User Role</StyledTableCell>
+            <StyledTableCell align="center">Make Admin</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {requestedMeal.map((meal) => (
-            <StyledTableRow key={meal.requestedMealStatus.requestedMealId}>
+          {allUsers.map((user) => (
+            <StyledTableRow key={user._id}>
               <StyledTableCell component="th" scope="row">
-                <Link
-                  style={{ textDecoration: "none", color: "#000000de" }}
-                  to={`/meal/${meal._id}`}
-                >
-                  {meal.mealTitle}
-                </Link>
+                {user.userName}
               </StyledTableCell>
-              <StyledTableCell align="center">{meal.likes}</StyledTableCell>
+              <StyledTableCell align="center">{user.userEmail}</StyledTableCell>
               <StyledTableCell align="center">
-                {meal.reviews?.length}
+                {user.userBadge.split("-").join(" ")}
               </StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.requestedMealStatus.status}
-              </StyledTableCell>
+              <StyledTableCell align="center">{user.userRole}</StyledTableCell>
               <StyledTableCell align="center">
                 <AwesomeButton
-                  onPress={() =>
-                    handleMealCancel(meal.requestedMealStatus.requestedMealId)
-                  }
+                  onPress={() => handleMakeAdmin(user._id)}
                   type="danger"
                 >
-                  <CloseIcon />
-                  CANCEL
+                  MAKE ADMIN
                 </AwesomeButton>
               </StyledTableCell>
             </StyledTableRow>

@@ -11,8 +11,8 @@ import { Divider, Stack } from "@mui/material";
 import logo from "../../assets/logo.png";
 import loginIcon from "../../assets/icons/login.png";
 import useAuth from "./../../hooks/useAuth";
-import Swal from "sweetalert2";
 import SocialLogin from "../../components/Shared/SocialLogin";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const { userLogin } = useAuth();
@@ -28,25 +28,11 @@ export default function Login() {
   const onSubmit = (data) => {
     userLogin(data.email, data.password)
       .then(() => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Login Successfully",
-        });
+        toast.success('Login Successfully')
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.message)
       });
   };
 

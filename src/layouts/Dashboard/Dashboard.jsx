@@ -14,8 +14,13 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import { Outlet } from "react-router-dom";
+import { adminListItems, mainListItems, secondaryListItems } from "./listItems";
+import { NavLink, Outlet } from "react-router-dom";
+import useUserRole from "../../api/useUserRole";
+import useAuth from "../../hooks/useAuth";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 
 const drawerWidth = 240;
 
@@ -64,10 +69,16 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Dashboard() {
+  const { user, loading } = useAuth();
+  const [userRole, isUserRoleLoading] = useUserRole();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  if (loading || isUserRoleLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -121,9 +132,29 @@ export default function Dashboard() {
         </Toolbar>
         <Divider />
         <List component="nav">
-          {mainListItems}
+          {user && userRole.userRole === "Admin"
+            ? adminListItems
+            : user && mainListItems}
           <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
+          {user && userRole.userRole === "Admin" ? (
+            <NavLink
+              style={{
+                textDecoration: "none",
+                fontWeight: 500,
+                color: "#000000de",
+              }}
+              to="/"
+            >
+              <ListItemButton>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Back To Home" />
+              </ListItemButton>
+            </NavLink>
+          ) : (
+            user && secondaryListItems
+          )}
         </List>
       </Drawer>
       <Box

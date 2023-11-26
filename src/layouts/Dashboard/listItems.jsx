@@ -10,12 +10,16 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { NavLink } from "react-router-dom";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
 import HomeIcon from "@mui/icons-material/Home";
-export const mainListItems = (
+import SetMealIcon from "@mui/icons-material/SetMeal";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import KebabDiningIcon from "@mui/icons-material/KebabDining";
+export const adminListItems = (
   <React.Fragment>
     <NavLink
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/dashboard"
     >
@@ -31,6 +35,139 @@ export const mainListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/admin"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <AccountCircleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Admin Profile" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/manage-users"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleAltIcon />
+        </ListItemIcon>
+        <ListItemText primary="Manage Users" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/add-meal"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <FastfoodIcon />
+        </ListItemIcon>
+        <ListItemText primary="Add Meal" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/admin-all-meals"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <FastfoodIcon />
+        </ListItemIcon>
+        <ListItemText primary="All Meals" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/all-reviews"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <RateReviewIcon />
+        </ListItemIcon>
+        <ListItemText primary="All Reviews" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/serve-meals"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <SetMealIcon />
+        </ListItemIcon>
+        <ListItemText primary="Serve Meals" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard/admin-upcoming-meals"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <KebabDiningIcon />
+        </ListItemIcon>
+        <ListItemText primary="Upcoming Meals" />
+      </ListItemButton>
+    </NavLink>
+  </React.Fragment>
+);
+
+export const mainListItems = (
+  <React.Fragment>
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
+      }}
+      to="/dashboard"
+    >
+      <ListItemButton>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItemButton>
+    </NavLink>
+
+    <NavLink
+      style={{
+        textDecoration: "none",
+        fontWeight: 500,
+        color: "#000000de",
       }}
       to="/dashboard/profile"
     >
@@ -46,6 +183,7 @@ export const mainListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/dashboard/requested-meals"
     >
@@ -61,6 +199,7 @@ export const mainListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/dashboard/reviews"
     >
@@ -80,6 +219,7 @@ export const secondaryListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/"
     >
@@ -94,6 +234,7 @@ export const secondaryListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/meals"
     >
@@ -108,6 +249,7 @@ export const secondaryListItems = (
       style={{
         textDecoration: "none",
         fontWeight: 500,
+        color: "#000000de",
       }}
       to="/upcoming-meals"
     >
@@ -115,7 +257,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <UpcomingIcon />
         </ListItemIcon>
-        <ListItemText primary="Upcoming Meals" />
+        <ListItemText primary="All Upcoming Meals" />
       </ListItemButton>
     </NavLink>
   </React.Fragment>

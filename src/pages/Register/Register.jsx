@@ -15,8 +15,8 @@ import styled from "@emotion/styled";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
-import Swal from "sweetalert2";
 import SocialLogin from "../../components/Shared/SocialLogin";
+import toast from "react-hot-toast";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -64,27 +64,13 @@ const Register = () => {
             };
             axiosPublic.post("/auth/users", userInformation).then((res) => {
               if (res.data.insertedId) {
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                  },
-                });
-                Toast.fire({
-                  icon: "success",
-                  title: "Signed Up Successfully",
-                });
+                toast.success('Signed Up Successfully')
                 navigate(from, { replace: true });
               }
             });
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err.message)
           });
       });
     }

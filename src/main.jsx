@@ -20,9 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <RouterProvider router={Routes}>
             <Main />/
           </RouterProvider>
-          <Toaster />
         </SiteTheme>
       </QueryClientProvider>
+      <Toaster />
     </AuthProvider>
   </React.StrictMode>
 );

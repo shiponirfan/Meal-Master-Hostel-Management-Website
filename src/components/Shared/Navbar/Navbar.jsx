@@ -22,7 +22,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import styled from "@emotion/styled";
 import useAuth from "../../../hooks/useAuth";
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -56,21 +56,7 @@ function Navbar() {
 
   const handleLogout = () => {
     userLogOut().then(() => {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Logout Successfully",
-      });
+      toast.success("Logout Successfully");
     });
     handleClose();
   };
