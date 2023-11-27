@@ -13,7 +13,7 @@ const MyProﬁle = () => {
   const { user } = useAuth();
   const [userRole] = useUserRole();
   const [paymentHistory, paymentLoading] = usePaymentHistory();
-  const [requestedMeal, requestedMealsLoading] = useRequestedMeals();
+  const [requestedMeal, requestedMealsLoading] = useRequestedMeals(user?.email);
 
   if (paymentLoading || requestedMealsLoading) {
     return <LoadingSpinner />;

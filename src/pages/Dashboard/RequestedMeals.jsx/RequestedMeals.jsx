@@ -41,7 +41,7 @@ export default function RequestedMeals() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [requestedMeal, requestedMealsLoading, requestedMealRefetch] =
-    useRequestedMeals();
+    useRequestedMeals(user?.email);
 
   const { mutate: mealCancel } = useMutation({
     mutationKey: ["mealCancel", user?.email],
