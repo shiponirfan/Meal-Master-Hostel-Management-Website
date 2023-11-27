@@ -105,7 +105,7 @@ export default function AllMeals() {
               </StyledTableCell>
               <StyledTableCell align="center">{meal.likes}</StyledTableCell>
               <StyledTableCell align="center">
-                {meal.reviews?.length}
+                {meal.reviews}
               </StyledTableCell>
               <StyledTableCell align="center">{meal.adminName}</StyledTableCell>
               <StyledTableCell align="center">

@@ -109,9 +109,7 @@ export default function AdminUpcomingMeals() {
                 {meal.mealTitle}
               </StyledTableCell>
               <StyledTableCell align="center">{meal.likes}</StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.reviews?.length}
-              </StyledTableCell>
+              <StyledTableCell align="center">{meal.reviews}</StyledTableCell>
               <StyledTableCell align="center">${meal.price}</StyledTableCell>
               <StyledTableCell align="center">{meal.mealType}</StyledTableCell>
               <StyledTableCell align="center">{meal.adminName}</StyledTableCell>

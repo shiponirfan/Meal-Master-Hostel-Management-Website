@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import useMealDetails from "../../api/useMealDetails";
+import Reviews from "../../components/Reviews/Reviews";
 
 const MealDetails = () => {
   const { id } = useParams();
@@ -48,7 +49,11 @@ const MealDetails = () => {
       return await axiosSecure.post("/requested-meal", requestedMealInfo);
     },
     onSuccess: () => {
-      toast.success("Meal Requested Successfully!");
+      Swal.fire({
+        title: "Success",
+        text: "Meal Requested Successfully!",
+        icon: "success",
+      });
     },
   });
 
@@ -149,7 +154,7 @@ const MealDetails = () => {
                     Reviews:{" "}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
-                    {reviews?.length}
+                    {reviews}
                   </Typography>
                 </Stack>
                 <Stack direction={"row"} alignItems={"center"} spacing={1}>
@@ -211,6 +216,8 @@ const MealDetails = () => {
             </Stack>
           </Grid>
         </Grid>
+        {/* Review Section */}
+        <Reviews reviewData={mealDetails} />
       </Container>
     </Stack>
   );

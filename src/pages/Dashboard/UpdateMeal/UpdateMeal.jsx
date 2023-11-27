@@ -118,7 +118,7 @@ const UpdateMeal = () => {
       rating: rating ? rating : mealDetails?.rating,
       dateTime: new Date(),
       likes: parseInt(data.Likes),
-      reviews: mealDetails?.reviews,
+      reviews: parseInt(data.Reviews),
       adminName: data.DistributorName,
       adminEmail: data.DistributorEmail,
     };
@@ -266,7 +266,7 @@ const UpdateMeal = () => {
             name="Reviews"
             type="number"
             autoFocus
-            defaultValue={mealDetails?.reviews?.length}
+            defaultValue={mealDetails?.reviews}
             {...register("Reviews")}
           />
         </FormControl>

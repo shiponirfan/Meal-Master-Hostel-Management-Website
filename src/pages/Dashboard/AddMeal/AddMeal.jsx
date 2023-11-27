@@ -124,7 +124,7 @@ const AddMeal = () => {
         rating: rating,
         dateTime: new Date(),
         likes: parseInt(data.Likes),
-        reviews: [],
+        reviews: parseInt(data.Reviews),
         adminName: data.DistributorName,
         adminEmail: data.DistributorEmail,
       };
