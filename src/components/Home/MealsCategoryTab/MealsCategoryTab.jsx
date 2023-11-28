@@ -9,8 +9,14 @@ import LoadingSpinner from "./../../Shared/LoadingSpinner";
 import HeadingTitle from "../../Shared/HeadingTitle";
 const MealsCategoryTab = () => {
   const [mealTypeTab, setMealTypeTab] = useState("");
-  const mealType = mealTypeTab;
-  const [meals, refetch, isLoading] = useMeals({ mealType });
+  const allMealsParams = {
+    mealType: mealTypeTab,
+    mealTitle: "",
+    sort: "",
+    pages: "",
+    limit: 12,
+  };
+  const [meals, refetch, isLoading] = useMeals(allMealsParams);
   useEffect(() => {
     refetch();
   }, [mealTypeTab, refetch]);
@@ -96,7 +102,7 @@ const MealsCategoryTab = () => {
             <LoadingSpinner />
           ) : (
             <>
-              <Grid container sx={{ mt: 6 }}>
+              <Grid container spacing={3} sx={{ mt: 6 }}>
                 {meals?.result?.map((meal) => (
                   <Grid key={meal._id} item xs={12} md={4} lg={3}>
                     <MealsCategoryCard meal={meal} />

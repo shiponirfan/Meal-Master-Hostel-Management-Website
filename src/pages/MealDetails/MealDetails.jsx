@@ -162,7 +162,7 @@ const MealDetails = () => {
                     Post Date:{" "}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
-                    {dateTime.slice(0, 10)}
+                    {dateTime?.slice(0, 10)}
                   </Typography>
                 </Stack>
               </Stack>

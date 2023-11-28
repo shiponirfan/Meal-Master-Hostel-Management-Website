@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function MealsCategoryCard({ meal }) {
   const { _id, mealTitle, mealImage, price, rating } = meal;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardMedia sx={{ height: 200 }} image={mealImage} title={mealTitle} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2" fontWeight={600}>
