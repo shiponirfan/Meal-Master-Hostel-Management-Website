@@ -50,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ServeMeals() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const [pages, setPages] = useState(1);
   const [requestedMeal, requestedMealsLoading, requestedMealRefetch] =
     useRequestedMeals("", pages, 8, searchInput);
@@ -106,7 +106,8 @@ export default function ServeMeals() {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     requestedMealRefetch();
   };
 
@@ -126,11 +127,16 @@ export default function ServeMeals() {
         alignItems={"center"}
         direction={"row"}
       >
-        <Typography variant="h5" fontWeight={700} sx={{ color: "white" }}>
-          Admin Serve Meals
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{ color: "white", display: { xs: "none", sm: "flex" } }}
+        >
+          All Serve Meals
         </Typography>
         <Paper
           component="form"
+          onSubmit={handleSearch}
           sx={{
             p: "2px 4px",
             display: "flex",
@@ -145,7 +151,7 @@ export default function ServeMeals() {
             onBlur={(e) => setSearchInput(e.target.value)}
             inputProps={{ "aria-label": "search meals" }}
           />
-          <Button onClick={handleSearch}>Search</Button>
+          <Button>Search</Button>
         </Paper>
       </Stack>
 
@@ -225,6 +231,10 @@ export default function ServeMeals() {
               sx={{
                 bgcolor: btn === pages ? "#f77f00" : "",
                 color: btn === pages ? "white" : "",
+                '&:hover': {
+                  bgcolor: btn === pages ? "#ff9900" : "",
+                  color: btn === pages ? "white" : "",
+                },
               }}
               variant="outlined"
               onClick={() => handlePagination(btn)}

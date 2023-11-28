@@ -16,7 +16,12 @@ const MyProﬁle = () => {
   const [allReviews] = useReviews(email);
   const [userRole] = useUserRole();
   const [paymentHistory, paymentLoading] = usePaymentHistory();
-  const [requestedMeal, requestedMealsLoading] = useRequestedMeals(user?.email);
+  const [requestedMeal, requestedMealsLoading] = useRequestedMeals(
+    user?.email,
+    "",
+    "",
+    ""
+  );
 
   if (paymentLoading || requestedMealsLoading) {
     return <LoadingSpinner />;
@@ -97,13 +102,15 @@ const MyProﬁle = () => {
           </Paper>
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              {requestedMeal?.length > 0 ? requestedMeal?.length : 0}
+              {requestedMeal?.data?.length > 0
+                ? requestedMeal?.data?.length
+                : 0}
             </Typography>
             <Typography variant="h6">Requested Meals</Typography>
           </Paper>
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              {allReviews?.length > 0 ? allReviews?.length : 0}
+              {allReviews?.result?.length > 0 ? allReviews?.result?.length : 0}
             </Typography>
             <Typography variant="h6">My Reviews</Typography>
           </Paper>

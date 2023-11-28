@@ -97,7 +97,7 @@ const MealsCategoryTab = () => {
           ) : (
             <>
               <Grid container sx={{ mt: 6 }}>
-                {meals?.map((meal) => (
+                {meals?.result?.map((meal) => (
                   <Grid key={meal._id} item xs={12} md={4} lg={3}>
                     <MealsCategoryCard meal={meal} />
                   </Grid>

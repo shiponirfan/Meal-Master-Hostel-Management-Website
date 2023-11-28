@@ -47,7 +47,7 @@ const Reviews = ({ reviewData }) => {
           All Reviews For {reviewData?.mealTitle}
         </Typography>
         <Grid container spacing={4}>
-          {allReviews?.map((review) => (
+          {allReviews?.result?.map((review) => (
             <Grid item key={review?._id} xs={12} md={6} lg={3}>
               <Card>
                 <CardHeader

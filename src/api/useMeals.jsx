@@ -15,7 +15,7 @@ const useMeals = ({ mealType,mealTitle,sort,pages,limit }) => {
           limit,
         },
       });
-      return res.data.result;
+      return res.data;
     },
   });
 

@@ -12,6 +12,17 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Divider,
+  InputBase,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,6 +47,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ManageUsers() {
   const { user } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const limit = 8;
+  const [pages, setPages] = useState(1);
   const axiosSecure = useAxiosSecure();
   const {
     data: allUsers = [],
@@ -44,10 +58,20 @@ export default function ManageUsers() {
   } = useQuery({
     queryKey: ["allUsers", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/auth/users");
+      const res = await axiosSecure.get("/auth/users", {
+        params: {
+          searchQuery,
+          pages,
+          limit,
+        },
+      });
       return res.data;
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, pages, searchQuery]);
 
   const { mutate: makeAdmin } = useMutation({
     mutationKey: ["makeAdmin", user?.email],
@@ -84,44 +108,154 @@ export default function ManageUsers() {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+  const totalPages = allUsers?.totalPagesCount;
+  const pageNumbersArray = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
 
+  const handlePagination = (btn) => {
+    setPages(btn);
+  };
+
+  const handlePrevious = () => {
+    if (pages > 1) {
+      setPages(pages - 1);
+    }
+  };
+  const handleNext = () => {
+    if (pages < totalPages) {
+      setPages(pages + 1);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    refetch();
+  };
   return (
-    <TableContainer component={Paper} sx={{ mt: 12 }}>
-      <Table sx={{ minWidth: 700 }} aria-label="Requested Meals">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>User Name</StyledTableCell>
-            <StyledTableCell align="center">User Email</StyledTableCell>
-            <StyledTableCell align="center">
-              Subscription Status
-            </StyledTableCell>
-            <StyledTableCell align="center">User Role</StyledTableCell>
-            <StyledTableCell align="center">Make Admin</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {allUsers.map((user) => (
-            <StyledTableRow key={user._id}>
-              <StyledTableCell component="th" scope="row">
-                {user.userName}
-              </StyledTableCell>
-              <StyledTableCell align="center">{user.userEmail}</StyledTableCell>
+    <Box
+      sx={{
+        width: "100%",
+        height: "calc(100vh - 64px)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Stack
+        sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        direction={"row"}
+      >
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{ color: "white", display: { xs: "none", sm: "flex" } }}
+        >
+          All Users
+        </Typography>
+        <Paper
+          component="form"
+          onSubmit={handleSearch}
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <SearchIcon />
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search Username, Email"
+            name="search_meals"
+            onBlur={(e) => setSearchQuery(e.target.value)}
+            inputProps={{ "aria-label": "search meals" }}
+          />
+          <Button>Search</Button>
+        </Paper>
+      </Stack>
+      <TableContainer
+        component={Paper}
+        sx={{ height: "calc(100vh - 230px)", borderRadius: 0 }}
+      >
+        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="Requested Meals">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>User Name</StyledTableCell>
+              <StyledTableCell align="center">User Email</StyledTableCell>
               <StyledTableCell align="center">
-                {user.userBadge.split("-").join(" ")}
+                Subscription Status
               </StyledTableCell>
-              <StyledTableCell align="center">{user.userRole}</StyledTableCell>
-              <StyledTableCell align="center">
-                <AwesomeButton
-                  onPress={() => handleMakeAdmin(user._id)}
-                  type="danger"
-                >
-                  MAKE ADMIN
-                </AwesomeButton>
-              </StyledTableCell>
-            </StyledTableRow>
+              <StyledTableCell align="center">User Role</StyledTableCell>
+              <StyledTableCell align="center">Make Admin</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allUsers?.result?.map((user) => (
+              <StyledTableRow key={user._id}>
+                <StyledTableCell component="th" scope="row">
+                  {user.userName}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {user.userEmail}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {user.userBadge.split("-").join(" ")}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {user.userRole}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <AwesomeButton
+                    onPress={() => handleMakeAdmin(user._id)}
+                    type="danger"
+                  >
+                    MAKE ADMIN
+                  </AwesomeButton>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Divider sx={{ borderColor: "#f77f00" }} />
+      <Stack
+        sx={{ p: 2, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <ButtonGroup
+          size="large"
+          variant="outlined"
+          aria-label="table pagination button"
+        >
+          <Button onClick={handlePrevious} variant="outlined">
+            {"<"}
+          </Button>
+          {pageNumbersArray?.map((btn, index) => (
+            <Button
+              sx={{
+                bgcolor: btn === pages ? "#f77f00" : "",
+                color: btn === pages ? "white" : "",
+                "&:hover": {
+                  bgcolor: btn === pages ? "#ff9900" : "",
+                  color: btn === pages ? "white" : "",
+                },
+              }}
+              variant="outlined"
+              onClick={() => handlePagination(btn)}
+              key={index}
+            >
+              {btn}
+            </Button>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <Button onClick={handleNext} variant="outlined">
+            {">"}
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </Box>
   );
 }

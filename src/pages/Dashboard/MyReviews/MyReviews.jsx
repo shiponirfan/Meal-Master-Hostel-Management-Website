@@ -38,8 +38,14 @@ const myStyles = {
 };
 import {
   Box,
+  Button,
+  ButtonGroup,
+  Divider,
   FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -69,8 +75,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function MyReviews() {
   const { user, loading } = useAuth();
-  const email = user?.email;
-  const [allReviews, reviewLoading, reviewRefetch] = useReviews(email);
+
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
   const [open, setOpen] = useState(false);
@@ -78,6 +83,18 @@ export default function MyReviews() {
   const [reviewId, setReviewId] = useState("");
   const [rating, setRating] = useState(0);
   const [reviewValue, setReviewValue] = useState("");
+  const [pages, setPages] = useState(1);
+  const [sortByRating, setSortByRating] = useState("");
+  const [sortByLikes, setSortByLikes] = useState("");
+  const allReviewsParams = {
+    email: user?.email,
+    sortByRating: sortByRating,
+    sortByLikes: sortByLikes,
+    pages: pages,
+    limit: 8,
+  };
+  const [allReviews, reviewLoading, reviewRefetch] =
+    useReviews(allReviewsParams);
   useEffect(() => {
     if (updatedReviewId) {
       setRating(updatedReviewId.reviewRating || 0);
@@ -104,6 +121,10 @@ export default function MyReviews() {
       });
     },
   });
+
+  useEffect(() => {
+    reviewRefetch();
+  }, [reviewRefetch, pages, sortByLikes, sortByRating]);
 
   const { mutate: updatedReview } = useMutation({
     mutationKey: ["updatedReview", user?.email],
@@ -153,115 +174,314 @@ export default function MyReviews() {
     });
   };
 
+  const totalPages = allReviews?.totalPagesCount;
+  const pageNumbersArray = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
+  const handlePagination = (btn) => {
+    setPages(btn);
+  };
+
+  const handlePrevious = () => {
+    if (pages > 1) {
+      setPages(pages - 1);
+    }
+  };
+  const handleNext = () => {
+    if (pages < totalPages) {
+      setPages(pages + 1);
+    }
+  };
+
+  const handleChange = (event) => {
+    setSortByRating(event.target.value);
+  };
+  const handleSortByLikes = (event) => {
+    setSortByLikes(event.target.value);
+  };
+
   return (
-    <Stack>
-      <TableContainer component={Paper} sx={{ mt: 12 }}>
-        <Table sx={{ minWidth: 700 }} aria-label="Requested Meals">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Meal Title</StyledTableCell>
-              <StyledTableCell align="center">Likes</StyledTableCell>
-              <StyledTableCell align="center">Review Rating</StyledTableCell>
-              <StyledTableCell align="center">Edit Review</StyledTableCell>
-              <StyledTableCell align="center">Delete</StyledTableCell>
-              <StyledTableCell align="center">View Meal</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allReviews?.map((reviews) => (
-              <StyledTableRow key={reviews._id}>
-                <StyledTableCell component="th" scope="row">
-                  {reviews.mealTitle}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {reviews.reviewLikes} Likes
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {reviews.reviewRating} Star
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <AwesomeButton
-                    onPress={() => handleOpen(reviews)}
-                    type="secondary"
-                    after={<CalendarViewDayOutlinedIcon />}
-                  >
-                    EDIT REVIEW
-                  </AwesomeButton>
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <AwesomeButton
-                    onPress={() => handleReviewDelete(reviews._id)}
-                    type="danger"
-                    after={<DeleteOutlineIcon />}
-                  >
-                    DELETE
-                  </AwesomeButton>
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Link to={`/meal/${reviews.mealId}`}>
-                    <AwesomeButton
-                      type="github"
-                      after={<BrokenImageOutlinedIcon />}
-                    >
-                      View Meal
-                    </AwesomeButton>
-                  </Link>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* Update Review Modal */}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+    <Box
+      sx={{
+        width: "100%",
+        height: "calc(100vh - 64px)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Stack
+        sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        direction={"row"}
       >
-        <Box sx={style}>
-          <Stack>
-            <Typography variant="h6" fontWeight={700}>
-              Update Your Review:
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+        >
+          All Reviews
+        </Typography>
+        <Stack direction={"row"} spacing={2}>
+          <Stack direction={"row"} alignItems={"center"} spacing={2}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+            >
+              Sort By Likes:
             </Typography>
-            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
-                <TextField
-                  id="ReviewDetails"
-                  label="Review Details"
-                  variant="filled"
-                  multiline
-                  margin="normal"
-                  value={reviewValue}
-                  rows={8}
-                  {...register("review")}
-                  onChange={(event) => {
-                    setReviewValue(event.target.value);
-                  }}
-                />
-              </FormControl>
-
-              <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                <Typography variant="h6" fontWeight={700}>
-                  Rating:
-                </Typography>
-                <Rating
-                  style={{ maxWidth: 250 }}
-                  itemStyles={myStyles}
-                  value={rating}
-                  onChange={setRating}
-                />
-              </Stack>
-
-              <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
-                <AwesomeButton style={{ width: "100%" }} type="primary">
-                  Update Review
-                </AwesomeButton>
-              </Stack>
-            </Box>
+            <FormControl
+              variant="filled"
+              sx={{
+                minWidth: 200,
+                bgcolor: "white",
+                borderRadius: 2,
+              }}
+            >
+              <InputLabel id="sortByLikes">Likes</InputLabel>
+              <Select
+                labelId="sortByLikes"
+                id="sortByLikes"
+                value={sortByLikes}
+                variant="filled"
+                sx={{
+                  bgcolor: "white",
+                  borderRadius: 2,
+                  "&:before": {
+                    borderBottom: 0,
+                  },
+                  "&:hover": {
+                    bgcolor: "white",
+                    "&:before": {
+                      borderBottom: 0,
+                    },
+                  },
+                  "&:active": {
+                    bgcolor: "white",
+                  },
+                  "&:focus": {
+                    bgcolor: "white",
+                  },
+                }}
+                onChange={handleSortByLikes}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={-1}>High To Low</MenuItem>
+                <MenuItem value={1}>Low To High</MenuItem>
+              </Select>
+            </FormControl>
           </Stack>
-        </Box>
-      </Modal>
-    </Stack>
+          <Stack direction={"row"} alignItems={"center"} spacing={2}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+            >
+              Sort By Rating:
+            </Typography>
+            <FormControl
+              variant="filled"
+              sx={{
+                minWidth: 200,
+                bgcolor: "white",
+                borderRadius: 2,
+              }}
+            >
+              <InputLabel id="sortByRating">Rating</InputLabel>
+              <Select
+                labelId="sortByRating"
+                id="sortByRating"
+                value={sortByRating}
+                variant="filled"
+                sx={{
+                  bgcolor: "white",
+                  borderRadius: 2,
+                  "&:before": {
+                    borderBottom: 0,
+                  },
+                  "&:hover": {
+                    bgcolor: "white",
+                    "&:before": {
+                      borderBottom: 0,
+                    },
+                  },
+                  "&:active": {
+                    bgcolor: "white",
+                  },
+                  "&:focus": {
+                    bgcolor: "white",
+                  },
+                }}
+                onChange={handleChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={-1}>High To Low</MenuItem>
+                <MenuItem value={1}>Low To High</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack>
+        <TableContainer
+          component={Paper}
+          sx={{ height: "calc(100vh - 230px)", borderRadius: 0 }}
+        >
+          <Table
+            stickyHeader
+            sx={{ minWidth: 700 }}
+            aria-label="Requested Meals"
+          >
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Meal Title</StyledTableCell>
+                <StyledTableCell align="center">Likes</StyledTableCell>
+                <StyledTableCell align="center">Review Rating</StyledTableCell>
+                <StyledTableCell align="center">Edit Review</StyledTableCell>
+                <StyledTableCell align="center">Delete</StyledTableCell>
+                <StyledTableCell align="center">View Meal</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allReviews?.result?.map((reviews) => (
+                <StyledTableRow key={reviews._id}>
+                  <StyledTableCell component="th" scope="row">
+                    {reviews.mealTitle}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {reviews.reviewLikes} Likes
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {reviews.reviewRating} Star
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <AwesomeButton
+                      onPress={() => handleOpen(reviews)}
+                      type="secondary"
+                      after={<CalendarViewDayOutlinedIcon />}
+                    >
+                      EDIT REVIEW
+                    </AwesomeButton>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <AwesomeButton
+                      onPress={() => handleReviewDelete(reviews._id)}
+                      type="danger"
+                      after={<DeleteOutlineIcon />}
+                    >
+                      DELETE
+                    </AwesomeButton>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Link to={`/meal/${reviews.mealId}`}>
+                      <AwesomeButton
+                        type="github"
+                        after={<BrokenImageOutlinedIcon />}
+                      >
+                        View Meal
+                      </AwesomeButton>
+                    </Link>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* Update Review Modal */}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Stack>
+              <Typography variant="h6" fontWeight={700}>
+                Update Your Review:
+              </Typography>
+              <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+                <FormControl variant="filled" sx={{ width: "100%" }}>
+                  <TextField
+                    id="ReviewDetails"
+                    label="Review Details"
+                    variant="filled"
+                    multiline
+                    margin="normal"
+                    value={reviewValue}
+                    rows={8}
+                    {...register("review")}
+                    onChange={(event) => {
+                      setReviewValue(event.target.value);
+                    }}
+                  />
+                </FormControl>
+
+                <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                  <Typography variant="h6" fontWeight={700}>
+                    Rating:
+                  </Typography>
+                  <Rating
+                    style={{ maxWidth: 250 }}
+                    itemStyles={myStyles}
+                    value={rating}
+                    onChange={setRating}
+                  />
+                </Stack>
+
+                <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
+                  <AwesomeButton style={{ width: "100%" }} type="primary">
+                    Update Review
+                  </AwesomeButton>
+                </Stack>
+              </Box>
+            </Stack>
+          </Box>
+        </Modal>
+      </Stack>
+      <Divider sx={{ borderColor: "#f77f00" }} />
+      <Stack
+        sx={{ p: 1, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <ButtonGroup
+          size="large"
+          variant="outlined"
+          aria-label="table pagination button"
+        >
+          <Button onClick={handlePrevious} variant="outlined">
+            {"<"}
+          </Button>
+          {pageNumbersArray?.map((btn, index) => (
+            <Button
+              sx={{
+                bgcolor: btn === pages ? "#f77f00" : "",
+                color: btn === pages ? "white" : "",
+                "&:hover": {
+                  bgcolor: btn === pages ? "#ff9900" : "",
+                  color: btn === pages ? "white" : "",
+                },
+              }}
+              variant="outlined"
+              onClick={() => handlePagination(btn)}
+              key={index}
+            >
+              {btn}
+            </Button>
+          ))}
+          <Button onClick={handleNext} variant="outlined">
+            {">"}
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </Box>
   );
 }

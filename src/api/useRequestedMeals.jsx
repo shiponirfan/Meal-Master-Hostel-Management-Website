@@ -3,6 +3,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 
 const useRequestedMeals = (userEmail, page, perPage, searchInput) => {
+  console.log(searchInput);
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const {
