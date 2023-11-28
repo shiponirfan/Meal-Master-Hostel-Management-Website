@@ -4,6 +4,7 @@ import MealsCategoryTab from "../../components/Home/MealsCategoryTab/MealsCatego
 import Membership from "../../components/Membership/Membership";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
 import HowItWorks from "../../components/Home/HowItWorks/HowItWorks";
+import AboutUsSection from "../../components/Home/AboutUsSection/AboutUsSection";
 
 const Home = () => {
     return (
@@ -11,8 +12,9 @@ const Home = () => {
             <BannerSlider/>
             <MealsCategoryTab/>
             <HowItWorks/>
-            <FeaturedSection/>
+            <AboutUsSection/>
             <Membership/>
+            <FeaturedSection/>
         </Stack>
     );
 };

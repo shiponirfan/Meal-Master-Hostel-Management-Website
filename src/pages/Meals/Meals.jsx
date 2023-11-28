@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   FormControl,
   Grid,
@@ -16,6 +17,8 @@ import MealsCategoryCard from "../../components/Shared/MealsCategoryCard/MealsCa
 import useMeals from "../../api/useMeals";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import SearchIcon from "@mui/icons-material/Search";
+import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
+import NoDataFound from "../../components/Shared/NoDataFound";
 const Meals = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [FilterByPrice, setFilterByPrice] = useState("");
@@ -43,164 +46,173 @@ const Meals = () => {
     setFilterByCategory(event.target.value);
   };
   return (
-    <Stack sx={{ py: 10 }}>
-      <Container maxWidth={"xl"}>
-        <Stack sx={{ alignItems: "center" }}>
-          {/* Meals Headers */}
-          <Stack
-            sx={{
-              p: 2,
-              bgcolor: "#e85d04",
-              borderRadius: " 20px 20px 0 0",
-              width: "100%",
-            }}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            direction={"row"}
-          >
-            <Stack direction={"row"} alignItems={"center"} spacing={2}>
-              <Stack direction={"row"} alignItems={"center"} spacing={2}>
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                  sx={{ color: "white", display: { xs: "none", md: "flex" } }}
-                >
-                  Filter By Category:
-                </Typography>
-                <FormControl
-                  variant="filled"
-                  sx={{
-                    minWidth: 200,
-                    bgcolor: "white",
-                    borderRadius: 2,
-                  }}
-                >
-                  <InputLabel id="FilterByCategory">Select Category</InputLabel>
-                  <Select
-                    labelId="FilterByCategory"
-                    id="FilterByCategory"
-                    value={FilterByCategory}
-                    variant="filled"
-                    sx={{
-                      bgcolor: "white",
-                      borderRadius: 2,
-                      "&:before": {
-                        borderBottom: 0,
-                      },
-                      "&:hover": {
-                        bgcolor: "white",
-                        "&:before": {
-                          borderBottom: 0,
-                        },
-                      },
-                      "&:active": {
-                        bgcolor: "white",
-                      },
-                      "&:focus": {
-                        bgcolor: "white",
-                      },
-                    }}
-                    onChange={handleSortByLikes}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                    <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                    <MenuItem value={"Dinner"}>Dinner</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
-              <Stack direction={"row"} alignItems={"center"} spacing={2}>
-                <Typography
-                  variant="h6"
-                  fontWeight={700}
-                  sx={{ color: "white", display: { xs: "none", md: "flex" } }}
-                >
-                  Filter By Price:
-                </Typography>
-                <FormControl
-                  variant="filled"
-                  sx={{
-                    minWidth: 200,
-                    bgcolor: "white",
-                    borderRadius: 2,
-                  }}
-                >
-                  <InputLabel id="FilterByPrice">Price Range</InputLabel>
-                  <Select
-                    labelId="FilterByPrice"
-                    id="FilterByPrice"
-                    value={FilterByPrice}
-                    variant="filled"
-                    sx={{
-                      bgcolor: "white",
-                      borderRadius: 2,
-                      "&:before": {
-                        borderBottom: 0,
-                      },
-                      "&:hover": {
-                        bgcolor: "white",
-                        "&:before": {
-                          borderBottom: 0,
-                        },
-                      },
-                      "&:active": {
-                        bgcolor: "white",
-                      },
-                      "&:focus": {
-                        bgcolor: "white",
-                      },
-                    }}
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={-1}>High To Low</MenuItem>
-                    <MenuItem value={1}>Low To High</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
-            </Stack>
-            <Paper
-              component="form"
-              onSubmit={handleSearch}
+    <Box>
+      <Stack sx={{ py: 10 }}>
+        <Container maxWidth={"xl"}>
+          <Stack sx={{ alignItems: "center" }}>
+            {/* Meals Headers */}
+            <Stack
               sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
+                p: 2,
+                bgcolor: "#e85d04",
+                borderRadius: " 20px 20px 0 0",
+                width: "100%",
               }}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              direction={"row"}
             >
-              <SearchIcon />
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search Meals"
-                name="search_meals"
-                onBlur={(e) => setSearchQuery(e.target.value)}
-                inputProps={{ "aria-label": "search meals" }}
-              />
-              <Button>Search</Button>
-            </Paper>
-          </Stack>
+              <Stack direction={"row"} alignItems={"center"} spacing={2}>
+                <Stack direction={"row"} alignItems={"center"} spacing={2}>
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+                  >
+                    Filter By Category:
+                  </Typography>
+                  <FormControl
+                    variant="filled"
+                    sx={{
+                      minWidth: 200,
+                      bgcolor: "white",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <InputLabel id="FilterByCategory">
+                      Select Category
+                    </InputLabel>
+                    <Select
+                      labelId="FilterByCategory"
+                      id="FilterByCategory"
+                      value={FilterByCategory}
+                      variant="filled"
+                      sx={{
+                        bgcolor: "white",
+                        borderRadius: 2,
+                        "&:before": {
+                          borderBottom: 0,
+                        },
+                        "&:hover": {
+                          bgcolor: "white",
+                          "&:before": {
+                            borderBottom: 0,
+                          },
+                        },
+                        "&:active": {
+                          bgcolor: "white",
+                        },
+                        "&:focus": {
+                          bgcolor: "white",
+                        },
+                      }}
+                      onChange={handleSortByLikes}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                      <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                      <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+                <Stack direction={"row"} alignItems={"center"} spacing={2}>
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+                  >
+                    Filter By Price:
+                  </Typography>
+                  <FormControl
+                    variant="filled"
+                    sx={{
+                      minWidth: 200,
+                      bgcolor: "white",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <InputLabel id="FilterByPrice">Price Range</InputLabel>
+                    <Select
+                      labelId="FilterByPrice"
+                      id="FilterByPrice"
+                      value={FilterByPrice}
+                      variant="filled"
+                      sx={{
+                        bgcolor: "white",
+                        borderRadius: 2,
+                        "&:before": {
+                          borderBottom: 0,
+                        },
+                        "&:hover": {
+                          bgcolor: "white",
+                          "&:before": {
+                            borderBottom: 0,
+                          },
+                        },
+                        "&:active": {
+                          bgcolor: "white",
+                        },
+                        "&:focus": {
+                          bgcolor: "white",
+                        },
+                      }}
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={-1}>High To Low</MenuItem>
+                      <MenuItem value={1}>Low To High</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Stack>
+              </Stack>
+              <Paper
+                component="form"
+                onSubmit={handleSearch}
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <SearchIcon />
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search Meals"
+                  name="search_meals"
+                  onBlur={(e) => setSearchQuery(e.target.value)}
+                  inputProps={{ "aria-label": "search meals" }}
+                />
+                <Button>Search</Button>
+              </Paper>
+            </Stack>
 
-          {/* Meals Category Card */}
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              <Grid container spacing={3} sx={{ mt: 6 }}>
-                {meals?.result?.map((meal) => (
-                  <Grid key={meal._id} item xs={12} md={4} lg={3}>
-                    <MealsCategoryCard meal={meal} />
+            {/* Meals Category Card */}
+            {meals?.result?.length > 0 ? (
+              isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <Grid container spacing={3} sx={{ mt: 6 }}>
+                    {meals?.result?.map((meal) => (
+                      <Grid key={meal._id} item xs={12} md={4} lg={3}>
+                        <MealsCategoryCard meal={meal} />
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
-            </>
-          )}
-        </Stack>
-      </Container>
-    </Stack>
+                </>
+              )
+            ) : isLoading ? <LoadingSpinner /> : (
+              <Stack sx={{ pt: 8 }}><NoDataFound /></Stack>
+            )}
+          </Stack>
+        </Container>
+      </Stack>
+      <FeaturedSection />
+    </Box>
   );
 };
 

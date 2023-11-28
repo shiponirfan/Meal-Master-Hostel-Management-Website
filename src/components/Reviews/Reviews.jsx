@@ -6,17 +6,31 @@ import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import useReviews from "../../api/useReviews";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AddReviewInput from "./AddReviewInput";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../Shared/LoadingSpinner";
+import { useEffect } from "react";
 
 const Reviews = ({ reviewData }) => {
-  const [allReviews, reviewLoading, reviewRefetch] = useReviews("");
   const axiosPublic = useAxiosPublic();
+  const {
+    data: allReviews,
+    isLoading: reviewLoading,
+    refetch: reviewRefetch,
+  } = useQuery({
+    queryKey: ["reviews-by-meal"],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/reviews-by-meal/${reviewData?._id}`);
+      return res.data;
+    },
+  });
+
+  useEffect(() => {
+    reviewRefetch();
+  }, [reviewRefetch, reviewData]);
 
   const { mutate: reviewLikeUpdate } = useMutation({
     mutationKey: ["reviewLikeUpdate"],
@@ -38,16 +52,18 @@ const Reviews = ({ reviewData }) => {
   }
 
   return (
-    <Stack sx={{ py: 8 }}>
+    <Stack sx={{ pt: 8 }}>
       <Divider sx={{ mb: 8 }} />
       {/* Add Review Input */}
       <AddReviewInput reviewData={reviewData} />
       <Stack sx={{ py: 8 }}>
         <Typography sx={{ mb: 2 }} variant="h6" fontWeight={700}>
-          All Reviews For {reviewData?.mealTitle}
+          {allReviews?.length > 0
+            ? `All Reviews For ${reviewData?.mealTitle}`
+            : ""}
         </Typography>
         <Grid container spacing={4}>
-          {allReviews?.result?.map((review) => (
+          {allReviews?.map((review) => (
             <Grid item key={review?._id} xs={12} md={6} lg={3}>
               <Card>
                 <CardHeader

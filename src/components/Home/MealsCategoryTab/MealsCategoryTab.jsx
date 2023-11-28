@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "./../../Shared/LoadingSpinner";
 import HeadingTitle from "../../Shared/HeadingTitle";
+import NoDataFound from "../../Shared/NoDataFound";
 const MealsCategoryTab = () => {
   const [mealTypeTab, setMealTypeTab] = useState("");
   const allMealsParams = {
@@ -98,33 +99,45 @@ const MealsCategoryTab = () => {
           </ButtonGroup>
 
           {/* Meals Category Card */}
-          {isLoading ? (
+          {meals?.result?.length > 0 ? (
+            isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                <Grid container spacing={3} sx={{ mt: 6 }}>
+                  {meals?.result?.map((meal) => (
+                    <Grid key={meal._id} item xs={12} md={4} lg={3}>
+                      <MealsCategoryCard meal={meal} />
+                    </Grid>
+                  ))}
+                </Grid>
+                <Link to="/meals">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      textTransform: "none",
+                      fontSize: 18,
+                      fontWeight: "700",
+                      color: "white",
+                      py: 1,
+                      mt: 6,
+                    }}
+                  >
+                    See All Meals
+                  </Button>
+                </Link>
+              </>
+            )
+          ) : isLoading ? (
             <LoadingSpinner />
           ) : (
-            <>
-              <Grid container spacing={3} sx={{ mt: 6 }}>
-                {meals?.result?.map((meal) => (
-                  <Grid key={meal._id} item xs={12} md={4} lg={3}>
-                    <MealsCategoryCard meal={meal} />
-                  </Grid>
-                ))}
-              </Grid>
-              <Link to="/meals">
-                <Button
-                  variant="contained"
-                  sx={{
-                    textTransform: "none",
-                    fontSize: 18,
-                    fontWeight: "700",
-                    color: "white",
-                    py: 1,
-                    mt: 6,
-                  }}
-                >
-                  See All Meals
-                </Button>
-              </Link>
-            </>
+            <Stack sx={{ pt: 8 }}>
+              <NoDataFound
+                subHeading={
+                  "Please check back later or try a different category."
+                }
+              />
+            </Stack>
           )}
         </Stack>
       </Container>

@@ -41,7 +41,7 @@ const AddReviewInput = ({ reviewData }) => {
       );
     },
     onSuccess: () => {
-      QueryClient.invalidateQueries({ queryKey: ["mealDetails"] });
+      QueryClient.invalidateQueries({ queryKey: ["reviews-by-meal"] });
     },
   });
 

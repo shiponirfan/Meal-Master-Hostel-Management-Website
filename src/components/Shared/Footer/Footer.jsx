@@ -14,7 +14,7 @@ const Footer = () => {
     <Stack
       sx={{
         py: 8,
-        background: `linear-gradient(to right, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0.5)),url(${footerBg})`,
+        background: `linear-gradient(to right, rgba(0, 0, 0, .7), rgba(0, 0, 0, 0.6)),url(${footerBg})`,
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
