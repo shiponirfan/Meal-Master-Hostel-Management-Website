@@ -72,3 +72,36 @@
 .like-btn.aws-btn{
     --button-horizontal-padding: 40px !important;
 }
+/* checkout-btn */
+.checkout-btn {
+    background-color: #f77f00;
+    color: white;
+    padding: 15px 60px;
+    font-size: 20px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ;
+    border-radius: 10px;
+}
+
+.checkout-btn:hover{
+    background-color: #e85d04;
+}
+
+.StripeElement {
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    border: 2px solid #f77f00;
+}
+.checkout-text-error {
+    color: red !important;
+    font-weight: 700;
+    font-size: 20px;
+}
+.checkout-text-success {
+    color: green !important;
+    font-weight: 700;
+    font-size: 20px;
+}

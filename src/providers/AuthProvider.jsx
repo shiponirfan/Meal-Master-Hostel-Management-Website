@@ -21,6 +21,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
   const axiosPublic = useAxiosPublic();
+  const [homeSearchInput, setHomeSearchInput] = useState('');
 
   const userSignUp = (email, password) => {
     setLoading(true);
@@ -80,6 +81,8 @@ const AuthProvider = ({ children }) => {
     userLogOut,
     googleLogin,
     updateUserProfile,
+    setHomeSearchInput,
+    homeSearchInput,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

@@ -79,7 +79,7 @@ export default function Membership() {
                       /mo
                     </Typography>
                   </Box>
-                  <ul>
+                  <ul style={{ listStyle: "none" }}>
                     {data.description.map((line) => (
                       <Typography
                         component="li"

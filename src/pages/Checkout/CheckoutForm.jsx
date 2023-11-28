@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { Stack } from "@mui/material";
 
 const CheckoutForm = ({ selectedPackage }) => {
   const axiosSecure = useAxiosSecure();
@@ -126,7 +127,7 @@ const CheckoutForm = ({ selectedPackage }) => {
         options={{
           style: {
             base: {
-              fontSize: "16px",
+              fontSize: "20px",
               color: "#424770",
               "::placeholder": {
                 color: "#aab7c4",
@@ -138,20 +139,26 @@ const CheckoutForm = ({ selectedPackage }) => {
           },
         }}
       />
-      <button
-        type="submit"
-        disabled={!stripe || !clientSecret}
-        className="text-xl text-white cursor-pointer rounded-lg font-bold py-5 px-44 bg-indigo-600 hover:bg-indigo-700 transition"
+      <Stack
+        sx={{ mt: 2 }}
+        direction={"row-reverse"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
-        Pay
-      </button>
-      <p className="text-red-600 font-bold my-5">{paymentMethodError}</p>
-      {transactionId && (
-        <p className="text-green-600 font-bold">
-          {" "}
-          Transaction Id: {transactionId}
-        </p>
-      )}
+        <button
+          type="submit"
+          disabled={!stripe || !clientSecret}
+          className="checkout-btn"
+        >
+          Pay Now
+        </button>
+        <p className="checkout-text-error">{paymentMethodError}</p>
+        {transactionId && (
+          <p className="checkout-text-success">
+            Transaction Id: {transactionId}
+          </p>
+        )}
+      </Stack>
     </form>
   );
 };

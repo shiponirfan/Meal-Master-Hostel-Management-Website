@@ -19,8 +19,12 @@ import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import SearchIcon from "@mui/icons-material/Search";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
 import NoDataFound from "../../components/Shared/NoDataFound";
+import featuredImg from "../../assets/banner/breadcumbimg.jpg";
+import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
+import useAuth from "../../hooks/useAuth";
 const Meals = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const { homeSearchInput } = useAuth();
+  const [searchQuery, setSearchQuery] = useState(homeSearchInput);
   const [FilterByPrice, setFilterByPrice] = useState("");
   const [FilterByCategory, setFilterByCategory] = useState("");
   const allMealsParams = {
@@ -33,7 +37,7 @@ const Meals = () => {
   const [meals, refetch, isLoading] = useMeals(allMealsParams);
   useEffect(() => {
     refetch();
-  }, [FilterByCategory, FilterByPrice, refetch, searchQuery]);
+  }, [FilterByCategory, FilterByPrice, refetch, searchQuery, homeSearchInput]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -47,7 +51,12 @@ const Meals = () => {
   };
   return (
     <Box>
-      <Stack sx={{ py: 10 }}>
+      <BreadcrumbsSection
+        mealTitle={"All Meals"}
+        breadcrumbs={"All Meals"}
+        mealImage={featuredImg}
+      />
+      <Stack sx={{ py: 8 }}>
         <Container maxWidth={"xl"}>
           <Stack sx={{ alignItems: "center" }}>
             {/* Meals Headers */}
@@ -183,6 +192,7 @@ const Meals = () => {
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search Meals"
                   name="search_meals"
+                  defaultValue={searchQuery}
                   onBlur={(e) => setSearchQuery(e.target.value)}
                   inputProps={{ "aria-label": "search meals" }}
                 />
@@ -205,8 +215,12 @@ const Meals = () => {
                   </Grid>
                 </>
               )
-            ) : isLoading ? <LoadingSpinner /> : (
-              <Stack sx={{ pt: 8 }}><NoDataFound /></Stack>
+            ) : isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <Stack sx={{ pt: 8 }}>
+                <NoDataFound />
+              </Stack>
             )}
           </Stack>
         </Container>

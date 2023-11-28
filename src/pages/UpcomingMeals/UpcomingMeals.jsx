@@ -19,6 +19,8 @@ import useUpcomingMeals from "../../api/useUpcomingMeals";
 import UpcomingMealsCard from "../../components/Shared/UpcomingMealsCard/UpcomingMealsCard";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
 import NoDataFound from "../../components/Shared/NoDataFound";
+import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
+import featuredImg from "../../assets/banner/videobg.jpg";
 const UpcomingMeals = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [FilterByPrice, setFilterByPrice] = useState("");
@@ -50,7 +52,12 @@ const UpcomingMeals = () => {
   };
   return (
     <Box>
-      <Stack sx={{ py: 10 }}>
+      <BreadcrumbsSection
+        mealTitle={"Upcoming Meals"}
+        breadcrumbs={"Upcoming Meals"}
+        mealImage={featuredImg}
+      />
+      <Stack sx={{ py: 8 }}>
         <Container maxWidth={"xl"}>
           <Stack sx={{ alignItems: "center" }}>
             {/* Meals Headers */}
@@ -208,8 +215,12 @@ const UpcomingMeals = () => {
                   </Grid>
                 </>
               )
-            ) : isLoading ? <LoadingSpinner /> : (
-              <Stack sx={{ pt: 8 }}><NoDataFound /></Stack>
+            ) : isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <Stack sx={{ pt: 8 }}>
+                <NoDataFound />
+              </Stack>
             )}
           </Stack>
         </Container>

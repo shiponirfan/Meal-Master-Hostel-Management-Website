@@ -19,16 +19,18 @@ import banner3 from "../../../assets/banner/banner3.jpg";
 
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { useState } from "react";
 import { useTheme } from "@emotion/react";
+import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const BannerSlider = () => {
   const theme = useTheme();
+  const { setHomeSearchInput } = useAuth();
+  const navigate = useNavigate();
 
-  // TODO: Add Search Functions
-  const [searchInput, setSearchInput] = useState();
-  const handleSearch = () => {
-    console.log(searchInput);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate("/meals");
   };
 
   return (
@@ -118,23 +120,22 @@ const BannerSlider = () => {
                   >
                     <Paper
                       component="form"
+                      onSubmit={handleSearch}
                       sx={{
                         p: "2px 4px",
                         display: "flex",
                         alignItems: "center",
-                        [theme.breakpoints.up("xs")]: { width: "300" },
-                        [theme.breakpoints.up("md")]: { width: 400 },
                       }}
                     >
-                      <SearchIcon sx={{ p: "10px" }} />
+                      <SearchIcon />
                       <InputBase
                         sx={{ ml: 1, flex: 1 }}
                         placeholder="Search Meals"
                         name="search_meals"
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={(e) => setHomeSearchInput(e.target.value)}
                         inputProps={{ "aria-label": "search meals" }}
                       />
-                      <Button onClick={handleSearch}>Search</Button>
+                      <Button onClick={() => navigate("/meals")}>Search</Button>
                     </Paper>
                   </Stack>
                 </Grid>
@@ -205,23 +206,22 @@ const BannerSlider = () => {
                   >
                     <Paper
                       component="form"
+                      onSubmit={handleSearch}
                       sx={{
                         p: "2px 4px",
                         display: "flex",
                         alignItems: "center",
-                        [theme.breakpoints.up("xs")]: { width: "300" },
-                        [theme.breakpoints.up("md")]: { width: 400 },
                       }}
                     >
-                      <SearchIcon sx={{ p: "10px" }} />
+                      <SearchIcon />
                       <InputBase
                         sx={{ ml: 1, flex: 1 }}
                         placeholder="Search Meals"
                         name="search_meals"
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={(e) => setHomeSearchInput(e.target.value)}
                         inputProps={{ "aria-label": "search meals" }}
                       />
-                      <Button onClick={handleSearch}>Search</Button>
+                      <Button onClick={() => navigate("/meals")}>Search</Button>
                     </Paper>
                   </Stack>
                 </Grid>
@@ -292,23 +292,22 @@ const BannerSlider = () => {
                   >
                     <Paper
                       component="form"
+                      onSubmit={handleSearch}
                       sx={{
                         p: "2px 4px",
                         display: "flex",
                         alignItems: "center",
-                        [theme.breakpoints.up("xs")]: { width: "300" },
-                        [theme.breakpoints.up("md")]: { width: 400 },
                       }}
                     >
-                      <SearchIcon sx={{ p: "10px" }} />
+                      <SearchIcon />
                       <InputBase
                         sx={{ ml: 1, flex: 1 }}
                         placeholder="Search Meals"
                         name="search_meals"
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={(e) => setHomeSearchInput(e.target.value)}
                         inputProps={{ "aria-label": "search meals" }}
                       />
-                      <Button onClick={handleSearch}>Search</Button>
+                      <Button onClick={() => navigate("/meals")}>Search</Button>
                     </Paper>
                   </Stack>
                 </Grid>

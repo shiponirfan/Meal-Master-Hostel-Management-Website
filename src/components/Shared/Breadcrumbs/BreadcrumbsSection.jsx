@@ -2,7 +2,7 @@ import { Container, Grid, Stack, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import PropTypes from "prop-types";
-const BreadcrumbsSection = ({ mealTitle, mealImage }) => {
+const BreadcrumbsSection = ({ mealTitle, mealImage, breadcrumbs }) => {
   return (
     <Stack
       sx={{
@@ -39,7 +39,7 @@ const BreadcrumbsSection = ({ mealTitle, mealImage }) => {
                 sx={{ color: "white" }}
               >
                 <FastfoodIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Meal Details
+                {breadcrumbs ? breadcrumbs : "Meal Details"}
               </Stack>
             </Stack>
           </Grid>
@@ -51,5 +51,6 @@ const BreadcrumbsSection = ({ mealTitle, mealImage }) => {
 BreadcrumbsSection.propTypes = {
   mealTitle: PropTypes.string,
   mealImage: PropTypes.string,
+  breadcrumbs: PropTypes.string,
 };
 export default BreadcrumbsSection;
