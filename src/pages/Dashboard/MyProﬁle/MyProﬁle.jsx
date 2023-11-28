@@ -8,9 +8,12 @@ import useUserRole from "./../../../api/useUserRole";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 import usePaymentHistory from "../../../api/usePaymentHistory";
 import useRequestedMeals from "../../../api/useRequestedMeals";
+import useReviews from "../../../api/useReviews";
 
 const MyProﬁle = () => {
   const { user } = useAuth();
+  const email = user?.email;
+  const [allReviews] = useReviews(email);
   const [userRole] = useUserRole();
   const [paymentHistory, paymentLoading] = usePaymentHistory();
   const [requestedMeal, requestedMealsLoading] = useRequestedMeals(user?.email);
@@ -100,7 +103,7 @@ const MyProﬁle = () => {
           </Paper>
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              0
+              {allReviews?.length > 0 ? allReviews?.length : 0}
             </Typography>
             <Typography variant="h6">My Reviews</Typography>
           </Paper>

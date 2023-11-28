@@ -14,6 +14,17 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import useRequestedMeals from "../../../api/useRequestedMeals";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Divider,
+  InputBase,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,8 +50,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ServeMeals() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [searchInput, setSearchInput] = useState('');
+  const [pages, setPages] = useState(1);
   const [requestedMeal, requestedMealsLoading, requestedMealRefetch] =
-    useRequestedMeals("");
+    useRequestedMeals("", pages, 8, searchInput);
+
+  useEffect(() => {
+    requestedMealRefetch();
+  }, [requestedMealRefetch, pages, searchInput]);
 
   const { mutate: mealServe } = useMutation({
     mutationKey: ["mealServe", user?.email],
@@ -68,59 +85,159 @@ export default function ServeMeals() {
   if (requestedMealsLoading) {
     return <LoadingSpinner />;
   }
+  const totalPages = requestedMeal?.totalPages;
+  const pageNumbersArray = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
+  const handlePagination = (btn) => {
+    setPages(btn);
+  };
+
+  const handlePrevious = () => {
+    if (pages > 1) {
+      setPages(pages - 1);
+    }
+  };
+  const handleNext = () => {
+    if (pages < totalPages) {
+      setPages(pages + 1);
+    }
+  };
+
+  const handleSearch = () => {
+    requestedMealRefetch();
+  };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 12 }}>
-      <Table sx={{ minWidth: 700 }} aria-label="Requested Meals">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Meal Title</StyledTableCell>
-            <StyledTableCell align="center">User Email</StyledTableCell>
-            <StyledTableCell align="center">User Name</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell align="center">Serve Button</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {requestedMeal.map((meal) => (
-            <StyledTableRow key={meal.requestedMealStatus.requestedMealId}>
-              <StyledTableCell component="th" scope="row">
-                {meal.mealTitle}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.requestedMealStatus.userEmail}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.requestedMealStatus.userName}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.requestedMealStatus.status}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {meal.requestedMealStatus.status === "Delivered" ? (
-                  <AwesomeButton
-                    onPress={() => handleMealDelivered()}
-                    type="primary"
-                    after={<DeliveryDiningIcon />}
-                  >
-                    SERVE
-                  </AwesomeButton>
-                ) : (
-                  <AwesomeButton
-                    onPress={() =>
-                      handleMealServe(meal.requestedMealStatus.requestedMealId)
-                    }
-                    type="primary"
-                    after={<DeliveryDiningIcon />}
-                  >
-                    SERVE
-                  </AwesomeButton>
-                )}
-              </StyledTableCell>
-            </StyledTableRow>
+    <Box
+      sx={{
+        width: "100%",
+        height: "calc(100vh - 64px)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Stack
+        sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        direction={"row"}
+      >
+        <Typography variant="h5" fontWeight={700} sx={{ color: "white" }}>
+          Admin Serve Meals
+        </Typography>
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <SearchIcon />
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search Username, Email"
+            name="search_meals"
+            onBlur={(e) => setSearchInput(e.target.value)}
+            inputProps={{ "aria-label": "search meals" }}
+          />
+          <Button onClick={handleSearch}>Search</Button>
+        </Paper>
+      </Stack>
+
+      <TableContainer
+        component={Paper}
+        sx={{ height: "calc(100vh - 230px)", borderRadius: 0 }}
+      >
+        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="Requested Meals">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Meal Title</StyledTableCell>
+              <StyledTableCell align="center">User Email</StyledTableCell>
+              <StyledTableCell align="center">User Name</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Serve Button</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {requestedMeal?.data?.map((meal) => (
+              <StyledTableRow key={meal.requestedMealStatus.requestedMealId}>
+                <StyledTableCell component="th" scope="row">
+                  {meal.mealTitle}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {meal.requestedMealStatus.userEmail}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {meal.requestedMealStatus.userName}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {meal.requestedMealStatus.status}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {meal.requestedMealStatus.status === "Delivered" ? (
+                    <AwesomeButton
+                      onPress={() => handleMealDelivered()}
+                      type="primary"
+                      after={<DeliveryDiningIcon />}
+                    >
+                      SERVE
+                    </AwesomeButton>
+                  ) : (
+                    <AwesomeButton
+                      onPress={() =>
+                        handleMealServe(
+                          meal.requestedMealStatus.requestedMealId
+                        )
+                      }
+                      type="primary"
+                      after={<DeliveryDiningIcon />}
+                    >
+                      SERVE
+                    </AwesomeButton>
+                  )}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Divider sx={{ borderColor: "#f77f00" }} />
+      <Stack
+        sx={{ p: 2, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <ButtonGroup
+          size="large"
+          variant="outlined"
+          aria-label="table pagination button"
+        >
+          <Button onClick={handlePrevious} variant="outlined">
+            {"<"}
+          </Button>
+          {pageNumbersArray?.map((btn, index) => (
+            <Button
+              sx={{
+                bgcolor: btn === pages ? "#f77f00" : "",
+                color: btn === pages ? "white" : "",
+              }}
+              variant="outlined"
+              onClick={() => handlePagination(btn)}
+              key={index}
+            >
+              {btn}
+            </Button>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <Button onClick={handleNext} variant="outlined">
+            {">"}
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </Box>
   );
 }
