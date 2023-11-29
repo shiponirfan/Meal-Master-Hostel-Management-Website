@@ -14,14 +14,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { Badge, Divider, Stack } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const pages = ["Meals", "Upcoming Meals"];
-
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import styled from "@emotion/styled";
 import useAuth from "../../../hooks/useAuth";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import toast from "react-hot-toast";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -30,6 +29,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     top: 13,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: "0 4px",
+    color: "white",
   },
 }));
 
@@ -170,8 +170,8 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             {/* Cart Icon */}
             <IconButton sx={{ mr: 2 }} aria-label="cart">
-              <StyledBadge badgeContent={4} color="primary">
-                <ShoppingCartIcon />
+              <StyledBadge badgeContent={2} color="primary">
+                <NotificationsIcon />
               </StyledBadge>
             </IconButton>
 

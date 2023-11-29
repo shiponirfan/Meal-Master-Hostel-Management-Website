@@ -78,13 +78,20 @@ export default function ManageUsers() {
     mutationFn: async (id) => {
       return await axiosSecure.patch(`/auth/make-admin/${id}`);
     },
-    onSuccess: () => {
-      refetch();
-      Swal.fire({
-        title: "Success",
-        text: "User Role Updated To Admin Successfully",
-        icon: "success",
-      });
+    onSuccess: (data) => {
+      if (data.data.message === "User is already an admin.") {
+        Swal.fire({
+          title: "User is already an admin.",
+          icon: "info",
+        });
+      } else {
+        refetch();
+        Swal.fire({
+          title: "Success",
+          text: "User Role Updated To Admin Successfully",
+          icon: "success",
+        });
+      }
     },
   });
 

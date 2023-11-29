@@ -151,7 +151,7 @@ export default function AllMeals() {
           fontWeight={700}
           sx={{ color: "white", display: { xs: "none", sm: "flex" } }}
         >
-          All Users
+          All Meals
         </Typography>
         <Paper
           component="form"

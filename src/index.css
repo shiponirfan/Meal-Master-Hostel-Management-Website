@@ -18,6 +18,15 @@
     color: #f77f00;
 }
 
+/* Dashboard Menu CSS */
+.active.dashboard-menu .css-gesgt7-MuiButtonBase-root-MuiListItemButton-root {
+    background: #f77f00 !important;
+    color: white !important;
+}
+.active.dashboard-menu svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root {
+    color: white !important;
+}
+
 /* Banner Slider */
 .banner-slider .swiper-button-next,
 .banner-slider .swiper-button-prev {
@@ -74,7 +83,7 @@
 }
 /* checkout-btn */
 .checkout-btn {
-    background-color: #f77f00;
+    background-color: #1b1714;
     color: white;
     padding: 15px 60px;
     font-size: 20px;

@@ -139,7 +139,7 @@ export default function RequestedMeals() {
           fontWeight={700}
           sx={{ color: "white", display: { xs: "none", sm: "flex" } }}
         >
-          All Serve Meals
+          Requested Meals
         </Typography>
       </Stack>
       <TableContainer

@@ -15,7 +15,7 @@ const MyProﬁle = () => {
   const email = user?.email;
   const [allReviews] = useReviews(email);
   const [userRole] = useUserRole();
-  const [paymentHistory, paymentLoading] = usePaymentHistory();
+  const [paymentHistory, paymentLoading] = usePaymentHistory(user?.email);
   const [requestedMeal, requestedMealsLoading] = useRequestedMeals(
     user?.email,
     "",

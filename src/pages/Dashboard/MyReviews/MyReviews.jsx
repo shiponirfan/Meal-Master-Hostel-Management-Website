@@ -223,7 +223,7 @@ export default function MyReviews() {
           fontWeight={700}
           sx={{ color: "white", display: { xs: "none", md: "flex" } }}
         >
-          All Reviews
+          My Reviews
         </Typography>
         <Stack direction={"row"} spacing={2}>
           <Stack direction={"row"} alignItems={"center"} spacing={2}>

@@ -1,27 +1,37 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import Title from './Title';
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import * as React from "react";
+import Typography from "@mui/material/Typography";
+import Title from "./Title";
+import useUserRole from "./../../api/useUserRole";
+import useAuth from "../../hooks/useAuth";
+import usePaymentHistory from "../../api/usePaymentHistory";
 
 export default function Deposits() {
+  const { user } = useAuth();
+  const [userRole] = useUserRole();
+  let email = "";
+  if (userRole.userRole === "Admin") {
+    email = "";
+  } else {
+    email = user?.email;
+  }
+  const [paymentHistory] = usePaymentHistory(email);
+  const totalSpend = paymentHistory?.reduce(
+    (total, item) => total + item.price,
+    0
+  );
   return (
     <React.Fragment>
-      <Title>Recent Deposits</Title>
+      <Title>
+        {user && userRole.userRole === "Admin"
+          ? "Total Revenue"
+          : "Total Spend"}
+      </Title>
       <Typography component="p" variant="h4">
-        $3,024.00
+        {user && userRole.userRole === "Admin"
+          ? `$${totalSpend > 0 ? totalSpend : 0}`
+          : `$${totalSpend > 0 ? totalSpend : 0}`}
+        .00
       </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
-      </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

@@ -6,8 +6,6 @@ import platinumBadge from "../../../assets/icons/platinumbadge.png";
 import Badge from "@mui/material/Badge";
 import useUserRole from "./../../../api/useUserRole";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
-import usePaymentHistory from "../../../api/usePaymentHistory";
-import useRequestedMeals from "../../../api/useRequestedMeals";
 import useMeals from "../../../api/useMeals";
 
 const AdminProﬁle = () => {
@@ -82,7 +80,7 @@ const AdminProﬁle = () => {
         >
           <Paper elevation={4} sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight={700}>
-              {meals?.length}
+              {meals?.result?.length}
             </Typography>
             <Typography variant="h6">Total Meals Added</Typography>
           </Paper>

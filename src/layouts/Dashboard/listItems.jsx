@@ -13,9 +13,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import KebabDiningIcon from "@mui/icons-material/KebabDining";
+
 export const adminListItems = (
   <React.Fragment>
     <NavLink
+      // className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -32,6 +34,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -48,6 +51,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -64,6 +68,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -80,6 +85,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -96,6 +102,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -112,6 +119,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -128,6 +136,7 @@ export const adminListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -148,6 +157,7 @@ export const adminListItems = (
 export const mainListItems = (
   <React.Fragment>
     <NavLink
+      // className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -164,6 +174,7 @@ export const mainListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -180,6 +191,7 @@ export const mainListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -196,6 +208,7 @@ export const mainListItems = (
     </NavLink>
 
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -216,6 +229,7 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -231,6 +245,7 @@ export const secondaryListItems = (
       </ListItemButton>
     </NavLink>
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -246,6 +261,7 @@ export const secondaryListItems = (
       </ListItemButton>
     </NavLink>
     <NavLink
+      className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,

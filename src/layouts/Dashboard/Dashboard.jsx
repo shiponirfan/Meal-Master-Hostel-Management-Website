@@ -15,12 +15,24 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { adminListItems, mainListItems, secondaryListItems } from "./listItems";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import useUserRole from "../../api/useUserRole";
 import useAuth from "../../hooks/useAuth";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import logo from "../../assets/logo.png";
+import Orders from "./Orders";
+import Deposits from "./Deposits";
+import Chart from "./Chart";
 
 const drawerWidth = 240;
 
@@ -71,11 +83,11 @@ const Drawer = styled(MuiDrawer, {
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const [userRole, isUserRoleLoading] = useUserRole();
+  const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
   if (loading || isUserRoleLoading) {
     return <LoadingSpinner />;
   }
@@ -91,7 +103,7 @@ export default function Dashboard() {
         >
           <IconButton
             edge="start"
-            color="inherit"
+            color="white"
             aria-label="open drawer"
             onClick={toggleDrawer}
             sx={{
@@ -99,22 +111,30 @@ export default function Dashboard() {
               ...(open && { display: "none" }),
             }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "white" }} />
           </IconButton>
           <Typography
             component="h1"
             variant="h6"
-            color="inherit"
+            color="white"
             noWrap
             sx={{ flexGrow: 1 }}
           >
             Dashboard
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={2} color="info">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+
+          <Tooltip title="Profile">
+            <Avatar
+              sx={{ ml: 1 }}
+              alt="user profile"
+              src={user?.photoURL ? user.photoURL : ""}
+            ></Avatar>
+          </Tooltip>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -126,6 +146,9 @@ export default function Dashboard() {
             px: [1],
           }}
         >
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <img style={{ width: "160px" }} src={logo} alt="logo" />
+          </Box>
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
@@ -157,23 +180,77 @@ export default function Dashboard() {
           )}
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="xl">
-          <Outlet />
-        </Container>
-      </Box>
+
+      {location.pathname === "/dashboard" ? (
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  <Chart />
+                </Paper>
+              </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 240,
+                  }}
+                >
+                  <Deposits />
+                </Paper>
+              </Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <Orders />
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      ) : (
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="xl">
+            <Outlet />
+          </Container>
+        </Box>
+      )}
     </Box>
   );
 }
