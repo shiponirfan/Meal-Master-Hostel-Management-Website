@@ -114,3 +114,7 @@
     font-weight: 700;
     font-size: 20px;
 }
+
+.infinite-scroll-component__outerdiv {
+    width: 100%;
+}

@@ -14,7 +14,6 @@ import {
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import MealsCategoryCard from "../../components/Shared/MealsCategoryCard/MealsCategoryCard";
-import useMeals from "../../api/useMeals";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import SearchIcon from "@mui/icons-material/Search";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
@@ -22,19 +21,45 @@ import NoDataFound from "../../components/Shared/NoDataFound";
 import featuredImg from "../../assets/banner/breadcumbimg.jpg";
 import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
 import useAuth from "../../hooks/useAuth";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import InfiniteScroll from "react-infinite-scroll-component";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 const Meals = () => {
   const { homeSearchInput } = useAuth();
   const [searchQuery, setSearchQuery] = useState(homeSearchInput);
   const [FilterByPrice, setFilterByPrice] = useState("");
   const [FilterByCategory, setFilterByCategory] = useState("");
-  const allMealsParams = {
-    mealType: FilterByCategory,
-    mealTitle: searchQuery,
-    sort: FilterByPrice,
-    pages: "",
-    limit: "",
+
+  const axiosPublic = useAxiosPublic();
+
+  const getMeals = async ({ pageParam = 1 }) => {
+    const res = await axiosPublic.get("/meals", {
+      params: {
+        mealType: FilterByCategory,
+        mealTitle: searchQuery,
+        sort: FilterByPrice,
+        pages: pageParam,
+        limit: 12,
+      },
+    });
+    return { ...res.data, prevOffset: pageParam };
   };
-  const [meals, refetch, isLoading] = useMeals(allMealsParams);
+
+  const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
+    queryKey: ["meals"],
+    queryFn: getMeals,
+    getNextPageParam: (LastPage) => {
+      if (LastPage.prevOffset + 10 > LastPage.totalPagesCount) {
+        return false;
+      }
+      return LastPage.prevOffset + 10;
+    },
+  });
+
+  const mealsQuery = data?.pages.reduce((meal, page) => {
+    return [...meal, ...page.result];
+  }, []);
+
   useEffect(() => {
     refetch();
   }, [FilterByCategory, FilterByPrice, refetch, searchQuery, homeSearchInput]);
@@ -199,28 +224,27 @@ const Meals = () => {
                 <Button>Search</Button>
               </Paper>
             </Stack>
-
-            {/* Meals Category Card */}
-            {meals?.result?.length > 0 ? (
-              isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <>
-                  <Grid container spacing={3} sx={{ mt: 6 }}>
-                    {meals?.result?.map((meal) => (
-                      <Grid key={meal._id} item xs={12} md={4} lg={3}>
-                        <MealsCategoryCard meal={meal} />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </>
-              )
-            ) : isLoading ? (
-              <LoadingSpinner />
-            ) : (
+            {mealsQuery?.length > 0 ? (
+              <InfiniteScroll
+                dataLength={mealsQuery ? mealsQuery?.length : 0}
+                next={() => fetchNextPage()}
+                hasMore={hasNextPage}
+                loader={<LoadingSpinner />}
+              >
+                <Grid container spacing={3} sx={{ mt: 6 }}>
+                  {mealsQuery?.map((meal) => (
+                    <Grid key={meal._id} item xs={12} md={4} lg={3}>
+                      <MealsCategoryCard meal={meal} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </InfiniteScroll>
+            ) : mealsQuery ? (
               <Stack sx={{ pt: 8 }}>
                 <NoDataFound />
               </Stack>
+            ) : (
+              <LoadingSpinner />
             )}
           </Stack>
         </Container>
