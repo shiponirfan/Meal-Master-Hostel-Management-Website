@@ -15,26 +15,49 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import SearchIcon from "@mui/icons-material/Search";
-import useUpcomingMeals from "../../api/useUpcomingMeals";
 import UpcomingMealsCard from "../../components/Shared/UpcomingMealsCard/UpcomingMealsCard";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
 import NoDataFound from "../../components/Shared/NoDataFound";
 import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
 import featuredImg from "../../assets/banner/videobg.jpg";
+import useAxiosPublic from "./../../hooks/useAxiosPublic";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import InfiniteScroll from "react-infinite-scroll-component";
 const UpcomingMeals = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [FilterByPrice, setFilterByPrice] = useState("");
   const [FilterByCategory, setFilterByCategory] = useState("");
 
-  const upcomingParams = {
-    mealType: FilterByCategory,
-    mealTitle: searchQuery,
-    sort: FilterByPrice,
-    pages: "",
-    limit: "",
+  const axiosPublic = useAxiosPublic();
+  const getUpcomingMeals = async ({ pageParam = 1 }) => {
+    const res = await axiosPublic.get("/upcoming-meals", {
+      params: {
+        mealType: FilterByCategory,
+        mealTitle: searchQuery,
+        sort: FilterByPrice,
+        pages: pageParam,
+        limit: 12,
+      },
+    });
+    return { ...res.data, prevOffset: pageParam };
   };
+  const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
+    queryKey: ["infinityUpcomingMeals"],
+    queryFn: getUpcomingMeals,
+    getNextPageParam: (LastPage) => {
+      if (LastPage.prevOffset + 10 > LastPage.totalPagesCount) {
+        return false;
+      }
+      return LastPage.prevOffset + 10;
+    },
+  });
 
-  const [upcomingMeals, refetch, isLoading] = useUpcomingMeals(upcomingParams);
+  const upcomingMealsQuery = data?.pages.reduce((meals, page) => {
+    const newMeals = page.result.filter(
+      (newMeal) => !meals.some((existingMeal) => existingMeal.id === newMeal.id)
+    );
+    return [...meals, ...newMeals];
+  }, []);
 
   useEffect(() => {
     refetch();
@@ -201,26 +224,30 @@ const UpcomingMeals = () => {
             </Stack>
 
             {/* Meals Category Card */}
-            {upcomingMeals?.result?.length > 0 ? (
-              isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <>
-                  <Grid container spacing={3} sx={{ mt: 6 }}>
-                    {upcomingMeals?.result?.map((meal) => (
-                      <Grid key={meal._id} item xs={12} md={4} lg={3}>
-                        <UpcomingMealsCard meal={meal} />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </>
-              )
-            ) : isLoading ? (
-              <LoadingSpinner />
-            ) : (
+            {upcomingMealsQuery && upcomingMealsQuery.length > 0 ? (
+              <InfiniteScroll
+                dataLength={
+                  (upcomingMealsQuery && upcomingMealsQuery.length) || 0
+                }
+                next={() => fetchNextPage()}
+                hasMore={hasNextPage}
+                loader={<LoadingSpinner />}
+                scrollThreshold={0.5}
+              >
+                <Grid container spacing={3} sx={{ mt: 6 }}>
+                  {upcomingMealsQuery?.map((meal) => (
+                    <Grid key={meal._id} item xs={12} md={4} lg={3}>
+                      <UpcomingMealsCard meal={meal} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </InfiniteScroll>
+            ) : upcomingMealsQuery ? (
               <Stack sx={{ pt: 8 }}>
                 <NoDataFound />
               </Stack>
+            ) : (
+              <LoadingSpinner />
             )}
           </Stack>
         </Container>

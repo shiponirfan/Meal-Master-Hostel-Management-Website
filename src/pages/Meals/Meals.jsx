@@ -46,7 +46,7 @@ const Meals = () => {
   };
 
   const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
-    queryKey: ["meals"],
+    queryKey: ["infinityMeals"],
     queryFn: getMeals,
     getNextPageParam: (LastPage) => {
       if (LastPage.prevOffset + 10 > LastPage.totalPagesCount) {
@@ -56,8 +56,11 @@ const Meals = () => {
     },
   });
 
-  const mealsQuery = data?.pages.reduce((meal, page) => {
-    return [...meal, ...page.result];
+  const mealsQuery = data?.pages.reduce((meals, page) => {
+    const newMeals = page.result.filter(
+      (newMeal) => !meals.some((existingMeal) => existingMeal.id === newMeal.id)
+    );
+    return [...meals, ...newMeals];
   }, []);
 
   useEffect(() => {
@@ -224,12 +227,13 @@ const Meals = () => {
                 <Button>Search</Button>
               </Paper>
             </Stack>
-            {mealsQuery?.length > 0 ? (
+            {mealsQuery && mealsQuery.length > 0 ? (
               <InfiniteScroll
-                dataLength={mealsQuery ? mealsQuery?.length : 0}
+                dataLength={(mealsQuery && mealsQuery.length) || 0}
                 next={() => fetchNextPage()}
                 hasMore={hasNextPage}
                 loader={<LoadingSpinner />}
+                scrollThreshold={0.5}
               >
                 <Grid container spacing={3} sx={{ mt: 6 }}>
                   {mealsQuery?.map((meal) => (
