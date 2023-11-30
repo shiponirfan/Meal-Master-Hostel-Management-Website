@@ -24,6 +24,7 @@ import useAuth from "../../hooks/useAuth";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { Helmet } from "react-helmet-async";
 const Meals = () => {
   const { homeSearchInput } = useAuth();
   const [searchQuery, setSearchQuery] = useState(homeSearchInput);
@@ -76,6 +77,9 @@ const Meals = () => {
   };
   return (
     <Box>
+      <Helmet>
+        <title>All Meals - Meal Master</title>
+      </Helmet>
       <BreadcrumbsSection
         mealTitle={"All Meals"}
         breadcrumbs={"All Meals"}

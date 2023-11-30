@@ -7,6 +7,7 @@ import Badge from "@mui/material/Badge";
 import useUserRole from "./../../../api/useUserRole";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 import useMeals from "../../../api/useMeals";
+import { Helmet } from "react-helmet-async";
 
 const AdminProﬁle = () => {
   const { user } = useAuth();
@@ -25,6 +26,9 @@ const AdminProﬁle = () => {
       alignItems: "center",
     }}
     >
+      <Helmet>
+        <title>Profile - Dashboard</title>
+      </Helmet>
       <Stack
         justifyContent={"center"}
         alignItems={"center"}

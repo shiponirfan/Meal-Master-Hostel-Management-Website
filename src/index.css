@@ -19,11 +19,11 @@
 }
 
 /* Dashboard Menu CSS */
-.active.dashboard-menu .css-gesgt7-MuiButtonBase-root-MuiListItemButton-root {
+a.dashboard-menu.active .MuiButtonBase-root.MuiListItemButton-root.MuiListItemButton-gutters.MuiListItemButton-root.MuiListItemButton-gutters.css-1rf1f39 {
     background: #f77f00 !important;
     color: white !important;
 }
-.active.dashboard-menu svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root {
+a.dashboard-menu.active svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-vubbuv {
     color: white !important;
 }
 
@@ -119,29 +119,28 @@
     width: 100% !important;
 }
 
-.css-186fyhv-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+.css-1lwh9ca.Mui-focused {
     color: rgba(0, 0, 0, 0.6) !important;
 }
-
 
 .css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root.Mui-focused {
     background-color: white !important;
 }
-
-.css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root:hover:not(.Mui-disabled, .Mui-error):before {
+.css-1vwnxuo.Mui-focused {
+    background-color: white !important;
+}
+.css-1vwnxuo::after {
     border-bottom: 0 !important;
 }
-
-.css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root:after {
+.css-1vwnxuo:hover:not(.Mui-disabled, .Mui-error)::before {
     border-bottom: 0 !important;
 }
-
-.css-d9oaum-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input:focus {
+.css-17gq4vl:focus {
     background-color: rgb(255 255 255 / 5%) !important;
-    border-radius: 0;
+    border-radius: 0px;
 }
 
-form.bigMealSearch.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.css-uduulw-MuiPaper-root {
+form.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.bigMealSearch.css-9ttigj {
     height: 56px !important;
     border-radius: 8px !important;
     padding-left: 10px !important;
@@ -164,4 +163,10 @@ form.bigMealSearch.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-el
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     padding: 30px;
     border-radius: 20px;
+}
+
+.dashboard-container {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
+    border-radius: 20px !important;
+    padding: 30px !important;
 }

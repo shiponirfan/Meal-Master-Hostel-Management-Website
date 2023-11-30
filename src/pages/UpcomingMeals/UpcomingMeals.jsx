@@ -23,6 +23,7 @@ import featuredImg from "../../assets/banner/videobg.jpg";
 import useAxiosPublic from "./../../hooks/useAxiosPublic";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Helmet } from "react-helmet-async";
 const UpcomingMeals = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [FilterByPrice, setFilterByPrice] = useState("");
@@ -72,6 +73,9 @@ const UpcomingMeals = () => {
   };
   return (
     <Box>
+      <Helmet>
+        <title>Upcoming Meals - Meal Master</title>
+      </Helmet>
       <BreadcrumbsSection
         mealTitle={"Upcoming Meals"}
         breadcrumbs={"Upcoming Meals"}

@@ -9,6 +9,7 @@ import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 import usePaymentHistory from "../../../api/usePaymentHistory";
 import useRequestedMeals from "../../../api/useRequestedMeals";
 import useReviews from "../../../api/useReviews";
+import { Helmet } from "react-helmet-async";
 
 const MyProﬁle = () => {
   const { user } = useAuth();
@@ -40,6 +41,9 @@ const MyProﬁle = () => {
         alignItems: "center",
       }}
     >
+      <Helmet>
+        <title>Profile - Dashboard</title>
+      </Helmet>
       <Stack
         justifyContent={"center"}
         alignItems={"center"}

@@ -2,9 +2,13 @@ import { Button, Container, Stack } from "@mui/material";
 import errorIcon from "../../assets/icons/404Error.png";
 import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 const ErrorPage = () => {
   return (
     <Container>
+      <Helmet>
+        <title>404 Not Found - Meal Master</title>
+      </Helmet>
       <Stack
         justifyContent={"center"}
         alignItems={"center"}

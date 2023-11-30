@@ -27,6 +27,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { Helmet } from "react-helmet-async";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#f77f00",
@@ -146,6 +147,9 @@ export default function AdminUpcomingMeals() {
         justifyContent: "center",
       }}
     >
+      <Helmet>
+        <title>Upcoming Meals - Dashboard</title>
+      </Helmet>
       <Stack
         sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
         justifyContent={"space-between"}

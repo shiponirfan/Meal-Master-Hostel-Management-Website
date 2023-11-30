@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { Helmet } from "react-helmet-async";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -150,6 +151,9 @@ export default function ManageUsers() {
         justifyContent: "center",
       }}
     >
+      <Helmet>
+        <title>Manage Users - Dashboard</title>
+      </Helmet>
       <Stack
         sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
         justifyContent={"space-between"}

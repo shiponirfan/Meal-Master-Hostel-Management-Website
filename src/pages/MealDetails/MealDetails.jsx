@@ -22,6 +22,7 @@ import Reviews from "../../components/Reviews/Reviews";
 import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
 import FeaturedSection from "../../components/Home/FeaturedSection/FeaturedSection";
 import RequestMealButton from "./RequestMealButton";
+import { Helmet } from "react-helmet-async";
 
 const MealDetails = () => {
   const { id } = useParams();
@@ -102,6 +103,9 @@ const MealDetails = () => {
 
   return (
     <Box>
+      <Helmet>
+        <title>{mealTitle} - Meal Master</title>
+      </Helmet>
       <BreadcrumbsSection mealTitle={mealTitle} mealImage={mealImage} />
       <Stack sx={{ pt: 10 }}>
         <Container maxWidth={"xl"}>

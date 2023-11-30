@@ -17,6 +17,7 @@ import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import SocialLogin from "../../components/Shared/SocialLogin";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -82,6 +83,9 @@ const Register = () => {
       justifyContent={"center"}
       alignItems={"center"}
     >
+      <Helmet>
+        <title>Register - Meal Master</title>
+      </Helmet>
       <Container maxWidth={"xl"}>
         <Stack
           sx={{

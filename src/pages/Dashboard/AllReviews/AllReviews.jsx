@@ -30,6 +30,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -148,6 +149,9 @@ export default function AllReviews() {
         justifyContent: "center",
       }}
     >
+      <Helmet>
+        <title>All Reviews - Dashboard</title>
+      </Helmet>
       <Stack
         sx={{ p: 2, bgcolor: "#e85d04", borderRadius: " 20px 20px 0 0" }}
         justifyContent={"space-between"}

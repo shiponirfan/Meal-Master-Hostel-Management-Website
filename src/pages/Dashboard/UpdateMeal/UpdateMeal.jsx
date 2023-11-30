@@ -28,6 +28,7 @@ import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import useMealDetails from "../../../api/useMealDetails";
+import { Helmet } from "react-helmet-async";
 const image_hosting_key = import.meta.env.VITE_IMGBB_ACCESS_TOKEN;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const myStyles = {
@@ -134,6 +135,9 @@ const UpdateMeal = () => {
         justifyContent: "center",
       }}
     >
+      <Helmet>
+        <title>Update Meal - Dashboard</title>
+      </Helmet>
       <Stack
         sx={{
           bgcolor: "white",

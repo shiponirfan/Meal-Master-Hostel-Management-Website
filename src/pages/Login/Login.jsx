@@ -13,6 +13,7 @@ import loginIcon from "../../assets/icons/login.png";
 import useAuth from "./../../hooks/useAuth";
 import SocialLogin from "../../components/Shared/SocialLogin";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 export default function Login() {
   const { userLogin } = useAuth();
@@ -42,6 +43,9 @@ export default function Login() {
       justifyContent={"center"}
       alignItems={"center"}
     >
+      <Helmet>
+        <title>Login - Meal Master</title>
+      </Helmet>
       <Container maxWidth={"xl"}>
         <Stack sx={{my:3, boxShadow: {xs: 'none', md: `rgba(100, 100, 111, 0.2) 0px 7px 29px 0px`}}} className="login-box-container">
           <Grid

@@ -8,6 +8,7 @@ import CheckoutForm from "./CheckoutForm";
 import BreadcrumbsSection from "../../components/Shared/Breadcrumbs/BreadcrumbsSection";
 import featuredImg from "../../assets/banner/payment.jpg";
 import checkoutIcon from "../../assets/icons/paymenticon.png";
+import { Helmet } from "react-helmet-async";
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_SECRET);
 const Checkout = () => {
   const { id } = useParams();
@@ -19,6 +20,9 @@ const Checkout = () => {
   const selectedPackage = membershipData.find((item) => item._id === id);
   return (
     <Box>
+      <Helmet>
+        <title>Checkout - Meal Master</title>
+      </Helmet>
       <BreadcrumbsSection
         mealTitle={"Checkout"}
         breadcrumbs={"Checkout"}
