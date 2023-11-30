@@ -95,19 +95,19 @@
 }
 
 .checkout-btn:hover{
-    background-color: #e85d04;
+    background-color: #e85d04 !important;
 }
 
 .StripeElement {
     padding: 20px;
     border-radius: 10px;
-    color: #fff;
+    color: #fff !important;
     border: 2px solid #f77f00;
 }
 .checkout-text-error {
     color: red !important;
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 700 !important;
+    font-size: 20px !important;
 }
 .checkout-text-success {
     color: green !important;
@@ -116,5 +116,52 @@
 }
 
 .infinite-scroll-component__outerdiv {
-    width: 100%;
+    width: 100% !important;
+}
+
+.css-186fyhv-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+
+.css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root.Mui-focused {
+    background-color: white !important;
+}
+
+.css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root:hover:not(.Mui-disabled, .Mui-error):before {
+    border-bottom: 0 !important;
+}
+
+.css-fmgh49-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root:after {
+    border-bottom: 0 !important;
+}
+
+.css-d9oaum-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input:focus {
+    background-color: rgb(255 255 255 / 5%) !important;
+    border-radius: 0;
+}
+
+form.bigMealSearch.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.css-uduulw-MuiPaper-root {
+    height: 56px !important;
+    border-radius: 8px !important;
+    padding-left: 10px !important;
+}
+
+.my-profile-container  {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
+}
+.my-profile-paper{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
+    border-radius: 20px !important;
+}
+
+.login-box-container{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 20px;
+    padding: 20px;
+}
+.login-box{
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    padding: 30px;
+    border-radius: 20px;
 }

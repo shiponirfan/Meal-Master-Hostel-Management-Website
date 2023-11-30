@@ -13,11 +13,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import KebabDiningIcon from "@mui/icons-material/KebabDining";
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 
 export const adminListItems = (
   <React.Fragment>
     <NavLink
-      // className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,
@@ -78,7 +78,7 @@ export const adminListItems = (
     >
       <ListItemButton>
         <ListItemIcon>
-          <FastfoodIcon />
+          <RestaurantMenuIcon />
         </ListItemIcon>
         <ListItemText primary="Add Meal" />
       </ListItemButton>
@@ -157,7 +157,6 @@ export const adminListItems = (
 export const mainListItems = (
   <React.Fragment>
     <NavLink
-      // className="dashboard-menu"
       style={{
         textDecoration: "none",
         fontWeight: 500,

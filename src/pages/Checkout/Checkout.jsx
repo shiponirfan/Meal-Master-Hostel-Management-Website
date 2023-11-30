@@ -30,10 +30,13 @@ const Checkout = () => {
             justifyContent={"center"}
             alignItems={"center"}
             container
-            spacing={10}
+            spacing={{ xs: 2, md: 10 }}
+            direction={{ xs: "column-reverse", md: "row" }}
           >
             <Grid item xs={12} md={6}>
-              <Box sx={{ height: "600px" }}>
+              <Box
+                sx={{ height: "600px", display: { xs: "none", sm: "flex" } }}
+              >
                 <img
                   style={{
                     width: "100%",
@@ -51,7 +54,7 @@ const Checkout = () => {
                   backgroundColor: "#f77f00",
                   color: "white",
                   py: 2,
-                  px: 10,
+                  px: { xs: 2, sm: 10 },
                   borderRadius: 2,
                   mb: 2,
                 }}

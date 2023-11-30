@@ -28,106 +28,128 @@ export default function Login() {
   const onSubmit = (data) => {
     userLogin(data.email, data.password)
       .then(() => {
-        toast.success('Login Successfully')
+        toast.success("Login Successfully");
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        toast.error(err.message)
+        toast.error(err.message);
       });
   };
 
   return (
-    <Stack sx={{ minHeight: "100vh" }} justifyContent={"center"}>
+    <Stack
+      sx={{ minHeight: "100vh", width: "100%" }}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       <Container maxWidth={"xl"}>
-        <Grid container>
-          <Grid item xs={6}>
-            <Box>
-              <img style={{ width: "600px" }} src={loginIcon} alt="logo" />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <Box
-                sx={{
-                  marginTop: 8,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+        <Stack sx={{my:3, boxShadow: {xs: 'none', md: `rgba(100, 100, 111, 0.2) 0px 7px 29px 0px`}}} className="login-box-container">
+          <Grid
+            spacing={5}
+            justifyContent={"center"}
+            alignItems={"center"}
+            container
+          >
+            <Grid sx={{display: {xs: 'none', md: 'grid'}}} item xs={12} md={6}>
+              <Stack
+                justifyContent={"center"}
+                alignItems={"center"}
+                sx={{ minWidth: "300px" }}
               >
-                {/* Logo */}
-                <Box>
-                  <Link to="/">
-                    <img style={{ width: "200px" }} src={logo} alt="logo" />
-                  </Link>
-                </Box>
-
+                <img
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                  src={loginIcon}
+                  alt="logo"
+                />
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Container className="login-box" maxWidth="sm">
+                <CssBaseline />
                 <Box
-                  component="form"
-                  onSubmit={handleSubmit(onSubmit)}
-                  sx={{ mt: 1 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
                 >
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    {...register("email", { required: true })}
-                  />
-                  {errors.email && (
-                    <Typography
-                      variant="h6"
-                      component={"span"}
-                      sx={{ fontSize: "1rem" }}
-                      color={"secondary"}
-                    >
-                      Email is required
-                    </Typography>
-                  )}
-                  <TextField
-                    margin="normal"
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    {...register("password", { required: true })}
-                  />
-                  {errors.password && (
-                    <Typography
-                      variant="h6"
-                      component={"span"}
-                      sx={{ fontSize: "1rem" }}
-                      color={"secondary"}
-                    >
-                      Password is required
-                    </Typography>
-                  )}
-                  <Box sx={{ mt: 1.6 }}>
-                    <AwesomeButton style={{ width: "100%" }} type="primary">
-                      Login
-                    </AwesomeButton>
+                  {/* Logo */}
+                  <Box>
+                    <Link to="/">
+                      <img style={{ width: "200px" }} src={logo} alt="logo" />
+                    </Link>
                   </Box>
-                </Box>
-                <Box maxWidth="xs">
-                  <Divider sx={{ my: 1.5 }}>OR LOGIN WITH GOOGLE</Divider>
-                  <SocialLogin />
-                  <Link
-                    style={{ color: "#f77f55", fontWeight: 700 }}
-                    to="/register"
+
+                  <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={{ mt: 1 }}
                   >
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                      {...register("email", { required: true })}
+                    />
+                    {errors.email && (
+                      <Typography
+                        variant="h6"
+                        component={"span"}
+                        sx={{ fontSize: "1rem" }}
+                        color={"secondary"}
+                      >
+                        Email is required
+                      </Typography>
+                    )}
+                    <TextField
+                      margin="normal"
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      {...register("password", { required: true })}
+                    />
+                    {errors.password && (
+                      <Typography
+                        variant="h6"
+                        component={"span"}
+                        sx={{ fontSize: "1rem" }}
+                        color={"secondary"}
+                      >
+                        Password is required
+                      </Typography>
+                    )}
+                    <Box sx={{ mt: 1.6 }}>
+                      <AwesomeButton style={{ width: "100%" }} type="primary">
+                        Login
+                      </AwesomeButton>
+                    </Box>
+                  </Box>
+                  <Container maxWidth="sm">
+                    <Divider sx={{ my: 1.5 }}>OR LOGIN WITH GOOGLE</Divider>
+                    <SocialLogin />
+                    <Link
+                      style={{ color: "#f77f55", fontWeight: 700 }}
+                      to="/register"
+                    >
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Container>
                 </Box>
-              </Box>
-            </Container>
+              </Container>
+            </Grid>
           </Grid>
-        </Grid>
+        </Stack>
       </Container>
     </Stack>
   );

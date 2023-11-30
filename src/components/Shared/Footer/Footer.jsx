@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import logo from "../../../assets/logo.png";
+import logoWhite from "../../../assets/logoWhite.png";
 import footerBg from "../../../assets/banner/footerbg.jpg";
 import { Link } from "react-router-dom";
 const Footer = () => {
@@ -22,14 +22,18 @@ const Footer = () => {
       }}
     >
       <Container maxWidth={"xl"}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={6} lg={6}>
             <Grid item xs={12} lg={7}>
               <Stack spacing={2.5}>
                 {/* Logo */}
-                <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                <Box>
                   <Link to="/">
-                    <img style={{ width: "260px" }} src={logo} alt="logo" />
+                    <img
+                      style={{ width: "260px" }}
+                      src={logoWhite}
+                      alt="logo"
+                    />
                   </Link>
                 </Box>
                 <Typography>
@@ -63,13 +67,14 @@ const Footer = () => {
           </Grid>
         </Grid>
         <Divider sx={{ my: 5, borderColor: "white" }} />
-        <Grid container>
+        <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <Typography>
-              © Copyright 2023 Meal Master. All rights reserved.
+              © Copyright {new Date().getFullYear()} Meal Master. All rights
+              reserved.
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6} textAlign={"right"}>
+          <Grid item xs={12} md={6} sx={{ textAlign: { md: "right" } }}>
             <Typography>F.A.Q | Privacy Policy | Terms & Conditions</Typography>
           </Grid>
         </Grid>

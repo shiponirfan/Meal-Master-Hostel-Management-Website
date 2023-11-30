@@ -1,4 +1,4 @@
-import { Avatar, Box, Paper, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Paper, Stack, Typography } from "@mui/material";
 import useAuth from "./../../../hooks/useAuth";
 import bronzeBadge from "../../../assets/icons/bronzebadge.png";
 import goldBadge from "../../../assets/icons/goldbadge.png";
@@ -35,7 +35,7 @@ const MyProﬁle = () => {
     <Stack
       sx={{
         minHeight: "calc(100vh - 64px)",
-        minWidth: "100vh",
+        width: "100%",
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -43,20 +43,21 @@ const MyProﬁle = () => {
       <Stack
         justifyContent={"center"}
         alignItems={"center"}
-        sx={{ background: "white", borderRadius: "20px", p: 10 }}
+        className="my-profile-container"
+        sx={{ background: "white", borderRadius: "20px", p: {xs: 2, lg: 10, md: 4} }}
       >
         <Badge
           overlap="circular"
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           badgeContent={
             <Paper
-              elevation={5}
+              elevation={2}
               sx={{
                 borderRadius: "100px",
               }}
             >
               <Avatar
-                sx={{ width: 60, height: 60 }}
+                sx={{ width: {xs: 30, sm: 60}, height: {xs: 30, sm: 60} }}
                 src={
                   userRole.userBadge === "Platinum-Badge"
                     ? platinumBadge
@@ -70,22 +71,40 @@ const MyProﬁle = () => {
         >
           <Avatar
             src={user?.photoURL ? user.photoURL : ""}
-            sx={{ width: 200, height: 200, mb: 1 }}
+            sx={{ width: {xs: 100, sm: 200}, height: {xs: 100, sm: 200}, mb: 1 }}
           />
         </Badge>
 
         <Stack justifyContent={"center"} alignItems={"center"} sx={{ mt: 1 }}>
-          <Typography variant="h4" textTransform={"uppercase"} fontWeight={700}>
+          <Typography sx={{fontSize: {xs: "20px", sm: "34px"}}} variant="h4" textTransform={"uppercase"} fontWeight={700}>
             {user?.displayName ? user?.displayName : "User Name"}
           </Typography>
-          <Typography variant="h6" fontWeight={700}>
+          <Typography sx={{fontSize: {xs: "16px", sm: "20px"}}} variant="h6" fontWeight={700}>
             {user?.email ? user?.email : "User Email"}
           </Typography>
+          <Chip
+            sx={{
+              fontWeight: 500,
+              color: "white",
+              mt: 1,
+              background: `linear-gradient(90deg, rgba(0, 146, 255, 1) 0%, rgba(7, 58, 187, 1) 100%)`,
+            }}
+            label={
+              userRole.userBadge === "Platinum-Badge"
+                ? "Platinum Member"
+                : userRole.userBadge === "Gold-Badge"
+                ? "Gold Member"
+                : "Bronze Member"
+            }
+            color="primary"
+          />
         </Stack>
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
             mt: 3,
             "& > :not(style)": {
               m: 1,
@@ -94,13 +113,21 @@ const MyProﬁle = () => {
             },
           }}
         >
-          <Paper elevation={4} sx={{ textAlign: "center" }}>
+          <Paper
+            className="my-profile-paper"
+            elevation={0}
+            sx={{ textAlign: "center" }}
+          >
             <Typography variant="h3" fontWeight={700}>
               ${totalSpend > 0 ? totalSpend : 0}
             </Typography>
             <Typography variant="h6">Total Spend</Typography>
           </Paper>
-          <Paper elevation={4} sx={{ textAlign: "center" }}>
+          <Paper
+            className="my-profile-paper"
+            elevation={4}
+            sx={{ textAlign: "center" }}
+          >
             <Typography variant="h3" fontWeight={700}>
               {requestedMeal?.data?.length > 0
                 ? requestedMeal?.data?.length
@@ -108,7 +135,11 @@ const MyProﬁle = () => {
             </Typography>
             <Typography variant="h6">Requested Meals</Typography>
           </Paper>
-          <Paper elevation={4} sx={{ textAlign: "center" }}>
+          <Paper
+            className="my-profile-paper"
+            elevation={4}
+            sx={{ textAlign: "center" }}
+          >
             <Typography variant="h3" fontWeight={700}>
               {allReviews?.result?.length > 0 ? allReviews?.result?.length : 0}
             </Typography>

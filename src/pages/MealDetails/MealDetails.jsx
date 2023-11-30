@@ -151,7 +151,7 @@ const MealDetails = () => {
                     </Typography>
                   </Stack>
                 </Stack>
-                <Stack direction={"row"} spacing={2}>
+                <Stack direction={{xs: "column", sm: "row"}} spacing={2}>
                   <Stack direction={"row"} alignItems={"center"} spacing={1}>
                     <Typography variant="body1" fontWeight={500}>
                       Rating:{" "}
@@ -190,7 +190,7 @@ const MealDetails = () => {
                 <Typography variant="h6" fontWeight={700}>
                   Ingredients
                 </Typography>
-                <Stack direction="row" spacing={1}>
+                <Stack direction={{xs: "column", sm: "row"}} spacing={1}>
                   {ingredients?.map((item) => (
                     <Chip
                       key={item}
@@ -210,7 +210,7 @@ const MealDetails = () => {
                 <Typography variant="body1">{description}</Typography>
               </Stack>
 
-              <Stack direction={"row"} spacing={2}>
+              <Stack direction={{xs: "column", sm: "row"}} spacing={2}>
                 {user ? (
                   <RequestMealButton mealId={_id} />
                 ) : (

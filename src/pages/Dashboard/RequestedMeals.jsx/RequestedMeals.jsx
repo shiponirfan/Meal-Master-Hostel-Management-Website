@@ -137,7 +137,7 @@ export default function RequestedMeals() {
         <Typography
           variant="h5"
           fontWeight={700}
-          sx={{ color: "white", display: { xs: "none", sm: "flex" } }}
+          sx={{ color: "white", fontSize: {sm: '24px', xs: '18px'} }}
         >
           Requested Meals
         </Typography>
@@ -146,7 +146,7 @@ export default function RequestedMeals() {
         component={Paper}
         sx={{ height: "calc(100vh - 230px)", borderRadius: 0 }}
       >
-        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="Requested Meals">
+        <Table stickyHeader sx={{ minWidth: 1000 }} aria-label="Requested Meals">
           <TableHead>
             <TableRow>
               <StyledTableCell>Meal Title</StyledTableCell>
@@ -190,9 +190,10 @@ export default function RequestedMeals() {
       </TableContainer>
       <Divider sx={{ borderColor: "#f77f00" }} />
       <Stack
-        sx={{ p: 2, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
+        sx={{ p: 1, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
         justifyContent={"center"}
         alignItems={"center"}
+        overflow={"auto"}
       >
         <ButtonGroup
           size="large"
@@ -205,6 +206,7 @@ export default function RequestedMeals() {
           {pageNumbersArray?.map((btn, index) => (
             <Button
               sx={{
+                display: { xs: "none", sm: "flex" },
                 bgcolor: btn === pages ? "#f77f00" : "",
                 color: btn === pages ? "white" : "",
                 "&:hover": {

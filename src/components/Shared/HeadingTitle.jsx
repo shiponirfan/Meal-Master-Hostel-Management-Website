@@ -12,8 +12,9 @@ const HeadingTitle = ({ titleOne, titleSecond, desc }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: "1.5rem",
+          gap: {sm: "1.5rem", xs: '0.8rem'},
           mb: 1,
+          fontSize: { sm: "96px", xs: "50px" }
         }}
       >
         {titleOne}
@@ -23,11 +24,12 @@ const HeadingTitle = ({ titleOne, titleSecond, desc }) => {
           component="span"
           fontWeight={700}
           color={"primary"}
+          sx={{fontSize: { sm: "96px", xs: "50px" }}}
         >
           {titleSecond}
         </Typography>
       </Typography>
-      <Typography variant="body1">{desc}</Typography>
+      <Typography textAlign={'center'} variant="body1">{desc}</Typography>
     </Stack>
   );
 };

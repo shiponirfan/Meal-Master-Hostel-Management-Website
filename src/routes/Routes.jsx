@@ -22,11 +22,13 @@ import ServeMeals from "../pages/Dashboard/ServeMeals/ServeMeals";
 import AdminUpcomingMeals from "../pages/Dashboard/AdminUpcomingMeals/AdminUpcomingMeals";
 import AllMeals from "./../pages/Dashboard/AllMeals/AllMeals";
 import UpdateMeal from "../pages/Dashboard/UpdateMeal/UpdateMeal";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+    errorElement: <ErrorPage/>,
     children: [
       {
         index: true,

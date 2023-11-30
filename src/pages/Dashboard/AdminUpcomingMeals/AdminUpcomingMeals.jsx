@@ -159,7 +159,11 @@ export default function AdminUpcomingMeals() {
         >
           All Upcoming Meals
         </Typography>
-        <Stack direction={"row"} alignItems={"center"} spacing={2}>
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          spacing={{ sm: 2, xs: 0 }}
+        >
           <Typography
             variant="h6"
             fontWeight={700}
@@ -215,7 +219,11 @@ export default function AdminUpcomingMeals() {
         component={Paper}
         sx={{ height: "calc(100vh - 230px)", borderRadius: 0 }}
       >
-        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="Requested Meals">
+        <Table
+          stickyHeader
+          sx={{ minWidth: 1000 }}
+          aria-label="Requested Meals"
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell>Meal Title</StyledTableCell>
@@ -277,6 +285,7 @@ export default function AdminUpcomingMeals() {
         sx={{ p: 1, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
         justifyContent={"center"}
         alignItems={"center"}
+        overflow={"auto"}
       >
         <ButtonGroup
           size="large"
@@ -289,6 +298,7 @@ export default function AdminUpcomingMeals() {
           {pageNumbersArray?.map((btn, index) => (
             <Button
               sx={{
+                display: { xs: "none", sm: "flex" },
                 bgcolor: btn === pages ? "#f77f00" : "",
                 color: btn === pages ? "white" : "",
                 "&:hover": {

@@ -56,11 +56,8 @@ const Meals = () => {
     },
   });
 
-  const mealsQuery = data?.pages.reduce((meals, page) => {
-    const newMeals = page.result.filter(
-      (newMeal) => !meals.some((existingMeal) => existingMeal.id === newMeal.id)
-    );
-    return [...meals, ...newMeals];
+  const mealsQuery = data?.pages.reduce((meal, page) => {
+    return [...meal, ...page.result];
   }, []);
 
   useEffect(() => {
@@ -94,24 +91,33 @@ const Meals = () => {
                 bgcolor: "#e85d04",
                 borderRadius: " 20px 20px 0 0",
                 width: "100%",
+                flexDirection: { xs: "column", md: "row" },
               }}
               justifyContent={"space-between"}
               alignItems={"center"}
-              direction={"row"}
+              spacing={{ xs: 1, sm: 2, md: 0 }}
             >
-              <Stack direction={"row"} alignItems={"center"} spacing={2}>
-                <Stack direction={"row"} alignItems={"center"} spacing={2}>
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                spacing={{ xs: 0.5, sm: 2 }}
+              >
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  spacing={{ xs: 0.5, sm: 2 }}
+                >
                   <Typography
                     variant="h6"
                     fontWeight={700}
-                    sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+                    sx={{ color: "white", display: { xs: "none", lg: "flex" } }}
                   >
                     Filter By Category:
                   </Typography>
                   <FormControl
                     variant="filled"
                     sx={{
-                      minWidth: 200,
+                      minWidth: { xs: 140, sm: 200 },
                       bgcolor: "white",
                       borderRadius: 2,
                     }}
@@ -154,18 +160,22 @@ const Meals = () => {
                     </Select>
                   </FormControl>
                 </Stack>
-                <Stack direction={"row"} alignItems={"center"} spacing={2}>
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  spacing={{ xs: 0.5, sm: 2 }}
+                >
                   <Typography
                     variant="h6"
                     fontWeight={700}
-                    sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+                    sx={{ color: "white", display: { xs: "none", lg: "flex" } }}
                   >
                     Filter By Price:
                   </Typography>
                   <FormControl
                     variant="filled"
                     sx={{
-                      minWidth: 200,
+                      minWidth: { xs: 140, sm: 200 },
                       bgcolor: "white",
                       borderRadius: 2,
                     }}
@@ -208,6 +218,7 @@ const Meals = () => {
               </Stack>
               <Paper
                 component="form"
+                className="bigMealSearch"
                 onSubmit={handleSearch}
                 sx={{
                   p: "2px 4px",
@@ -236,8 +247,8 @@ const Meals = () => {
                 scrollThreshold={0.5}
               >
                 <Grid container spacing={3} sx={{ mt: 6 }}>
-                  {mealsQuery?.map((meal) => (
-                    <Grid key={meal._id} item xs={12} md={4} lg={3}>
+                  {mealsQuery?.map((meal, index) => (
+                    <Grid key={index} item xs={12} md={4} lg={3}>
                       <MealsCategoryCard meal={meal} />
                     </Grid>
                   ))}

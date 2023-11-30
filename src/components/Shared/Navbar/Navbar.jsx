@@ -108,6 +108,17 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
+              <MenuItem onClick={handleCloseNavMenu}>
+                <NavLink
+                  style={{
+                    textDecoration: "none",
+                    color: "#003049"
+                  }}
+                  to="/"
+                >
+                  Home
+                </NavLink>
+              </MenuItem>
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <NavLink
@@ -169,7 +180,10 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             {/* Cart Icon */}
-            <IconButton sx={{ mr: 2 }} aria-label="cart">
+            <IconButton
+              sx={{ display: { xs: "none", sm: "inline-block" }, mr: 2 }}
+              aria-label="cart"
+            >
               <StyledBadge badgeContent={2} color="primary">
                 <NotificationsIcon />
               </StyledBadge>

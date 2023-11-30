@@ -40,7 +40,7 @@ const MealsCategoryTab = () => {
               onClick={() => setMealTypeTab("")}
               sx={{
                 textTransform: "none",
-                fontSize: 18,
+                fontSize: { sm: "18px", xs: "13px" },
                 fontWeight: "700",
                 backgroundColor: mealTypeTab === "" ? "#f77f00" : "",
                 color: mealTypeTab === "" ? "#fff" : "",
@@ -55,7 +55,7 @@ const MealsCategoryTab = () => {
               onClick={() => setMealTypeTab("Breakfast")}
               sx={{
                 textTransform: "none",
-                fontSize: 18,
+                fontSize: { sm: "18px", xs: "13px" },
                 fontWeight: "700",
                 backgroundColor: mealTypeTab === "Breakfast" ? "#f77f00" : "",
                 color: mealTypeTab === "Breakfast" ? "#fff" : "",
@@ -70,7 +70,7 @@ const MealsCategoryTab = () => {
               onClick={() => setMealTypeTab("Lunch")}
               sx={{
                 textTransform: "none",
-                fontSize: 18,
+                fontSize: { sm: "18px", xs: "13px" },
                 fontWeight: "700",
                 backgroundColor: mealTypeTab === "Lunch" ? "#f77f00" : "",
                 color: mealTypeTab === "Lunch" ? "#fff" : "",
@@ -85,7 +85,7 @@ const MealsCategoryTab = () => {
               onClick={() => setMealTypeTab("Dinner")}
               sx={{
                 textTransform: "none",
-                fontSize: 18,
+                fontSize: { sm: "18px", xs: "13px" },
                 fontWeight: "700",
                 backgroundColor: mealTypeTab === "Dinner" ? "#f77f00" : "",
                 color: mealTypeTab === "Dinner" ? "#fff" : "",

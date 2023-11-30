@@ -153,6 +153,7 @@ export default function AllReviews() {
         justifyContent={"space-between"}
         alignItems={"center"}
         direction={"row"}
+        overflow={"auto"}
       >
         <Typography
           variant="h5"
@@ -166,7 +167,7 @@ export default function AllReviews() {
             <Typography
               variant="h6"
               fontWeight={700}
-              sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+              sx={{ color: "white", display: { xs: "none", lg: "flex" } }}
             >
               Sort By Likes:
             </Typography>
@@ -217,7 +218,7 @@ export default function AllReviews() {
             <Typography
               variant="h6"
               fontWeight={700}
-              sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+              sx={{ color: "white", display: { xs: "none", lg: "flex" } }}
             >
               Sort By Rating:
             </Typography>
@@ -273,7 +274,7 @@ export default function AllReviews() {
         >
           <Table
             stickyHeader
-            sx={{ minWidth: 700 }}
+            sx={{ minWidth: 1000 }}
             aria-label="Requested Meals"
           >
             <TableHead>
@@ -335,6 +336,7 @@ export default function AllReviews() {
         sx={{ p: 1, bgcolor: "white", borderRadius: "0 0 20px 20px " }}
         justifyContent={"center"}
         alignItems={"center"}
+        overflow={"auto"}
       >
         <ButtonGroup
           size="large"
@@ -347,6 +349,7 @@ export default function AllReviews() {
           {pageNumbersArray?.map((btn, index) => (
             <Button
               sx={{
+                display: { xs: "none", sm: "flex" },
                 bgcolor: btn === pages ? "#f77f00" : "",
                 color: btn === pages ? "white" : "",
                 "&:hover": {

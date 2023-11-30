@@ -6,6 +6,7 @@ import {
   Button,
   Checkbox,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -126,232 +127,275 @@ const UpdateMeal = () => {
     UpdateMealData(mealData);
   };
   return (
-    <Stack>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="MealTitle"
-            label="Meal Title"
-            name="MealTitle"
-            defaultValue={mealDetails?.mealTitle}
-            autoFocus
-            {...register("MealTitle", { required: true })}
-          />
-          {errors.MealTitle && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Meal Title is required
-            </Typography>
-          )}
-        </FormControl>
-
-        <FormControl margin="normal" variant="filled" sx={{ width: "100%" }}>
-          <InputLabel id="MealType">Meal Type</InputLabel>
-          <Select
-            labelId="MealType"
-            id="MealType"
-            value={!mealTypes ? mealDetails?.mealType : mealTypes}
-            {...register("MealType", { required: true })}
-            onChange={(e) => setMealTypes(e.target.value)}
-          >
-            <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-            <MenuItem value={"Lunch"}>Lunch</MenuItem>
-            <MenuItem value={"Dinner"}>Dinner</MenuItem>
-          </Select>
-          {errors.MealType && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Meal Type is required
-            </Typography>
-          )}
-        </FormControl>
-
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <Autocomplete
-            onChange={(event, value) => setMealIngredientsData(value)}
-            multiple
-            variant="filled"
-            id="ingredients"
-            options={ingredients}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option}
-            defaultValue={
-              !mealIngredientsData
-                ? mealDetails?.ingredients
-                : mealIngredientsData
-            }
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
+    <Stack
+      sx={{
+        width: "100%",
+        minHeight: "calc(100vh - 64px)",
+        justifyContent: "center",
+      }}
+    >
+      <Stack
+        sx={{
+          bgcolor: "white",
+          p: { xs: 2, sm: 3, md: 6 },
+          borderRadius: 3,
+        }}
+      >
+        <Typography variant="h4" fontWeight={700}>
+          Update Meal
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+          <Grid container columnSpacing={3}>
+            <Grid item xs={12} sm={6} md={6}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="MealTitle"
+                  label="Meal Title"
+                  name="MealTitle"
+                  defaultValue={mealDetails?.mealTitle}
+                  autoFocus
+                  {...register("MealTitle", { required: true })}
                 />
-                {option}
-              </li>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="filled"
-                label="Ingredients"
-                placeholder="Ingredients"
+                {errors.MealTitle && (
+                  <Typography
+                    variant="h6"
+                    component={"span"}
+                    sx={{ fontSize: "1rem" }}
+                    color={"secondary"}
+                  >
+                    Meal Title is required
+                  </Typography>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <FormControl
                 margin="normal"
-                name="Ingredients"
-                {...register("Ingredients")}
-              />
-            )}
-          />
-        </FormControl>
+                variant="filled"
+                sx={{ width: "100%" }}
+              >
+                <InputLabel id="MealType">Meal Type</InputLabel>
+                <Select
+                  labelId="MealType"
+                  id="MealType"
+                  value={!mealTypes ? mealDetails?.mealType : mealTypes}
+                  {...register("MealType", { required: true })}
+                  onChange={(e) => setMealTypes(e.target.value)}
+                >
+                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                </Select>
+                {errors.MealType && (
+                  <Typography
+                    variant="h6"
+                    component={"span"}
+                    sx={{ fontSize: "1rem" }}
+                    color={"secondary"}
+                  >
+                    Meal Type is required
+                  </Typography>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="Price"
+                  label="Price"
+                  name="Price"
+                  type="number"
+                  defaultValue={mealDetails?.price}
+                  autoFocus
+                  {...register("Price", { required: true })}
+                />
+                {errors.Price && (
+                  <Typography
+                    variant="h6"
+                    component={"span"}
+                    sx={{ fontSize: "1rem" }}
+                    color={"secondary"}
+                  >
+                    Price is required
+                  </Typography>
+                )}
+              </FormControl>
+            </Grid>
 
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="Price"
-            label="Price"
-            name="Price"
-            type="number"
-            defaultValue={mealDetails?.price}
-            autoFocus
-            {...register("Price", { required: true })}
-          />
-          {errors.Price && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Price is required
-            </Typography>
-          )}
-        </FormControl>
+            <Grid item xs={12} sm={6} md={3} lg={2}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="Likes"
+                  label="Likes"
+                  name="Likes"
+                  type="number"
+                  autoFocus
+                  defaultValue={mealDetails?.likes}
+                  {...register("Likes")}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3} lg={2}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="Reviews"
+                  label="Reviews"
+                  name="Reviews"
+                  type="number"
+                  autoFocus
+                  defaultValue={mealDetails?.reviews}
+                  {...register("Reviews")}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={2}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="DistributorName"
+                  label="Distributor Name"
+                  name="DistributorName"
+                  autoFocus
+                  defaultValue={mealDetails?.adminName}
+                  {...register("DistributorName")}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={2}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  variant="filled"
+                  margin="normal"
+                  fullWidth
+                  id="DistributorEmail"
+                  label="Distributor Email"
+                  name="DistributorEmail"
+                  autoFocus
+                  defaultValue={mealDetails?.adminEmail}
+                  {...register("DistributorEmail")}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <Autocomplete
+                  onChange={(event, value) => setMealIngredientsData(value)}
+                  multiple
+                  variant="filled"
+                  id="ingredients"
+                  options={ingredients}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option}
+                  defaultValue={
+                    !mealIngredientsData
+                      ? mealDetails?.ingredients
+                      : mealIngredientsData
+                  }
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option}
+                    </li>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="filled"
+                      label="Ingredients"
+                      placeholder="Ingredients"
+                      margin="normal"
+                      name="Ingredients"
+                      {...register("Ingredients")}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <TextField
+                  id="Description"
+                  label="Description"
+                  multiline
+                  margin="normal"
+                  rows={4}
+                  variant="filled"
+                  defaultValue={mealDetails?.description}
+                  {...register("Description", { required: true })}
+                />
+                {errors.Description && (
+                  <Typography
+                    variant="h6"
+                    component={"span"}
+                    sx={{ fontSize: "1rem" }}
+                    color={"secondary"}
+                  >
+                    Description Title is required
+                  </Typography>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                alignItems={"center"}
+              >
+                <Button
+                  sx={{ mt: 0.5, textTransform: "none" }}
+                  component="label"
+                  variant="outlined"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Upload Profile Image
+                  <VisuallyHiddenInput {...register("mealImage")} type="file" />
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                sx={{ mt: { xs: 1.5, sm: 0 } }}
+                alignItems={"center"}
+              >
+                <Typography variant="h6" fontWeight={700}>
+                  Add Rating:
+                </Typography>
+                <Rating
+                  style={{ maxWidth: 250 }}
+                  itemStyles={myStyles}
+                  value={rating ? rating : mealDetails?.rating}
+                  onChange={setRating}
+                />
+              </Stack>
+            </Grid>
+          </Grid>
 
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="Likes"
-            label="Likes"
-            name="Likes"
-            type="number"
-            autoFocus
-            defaultValue={mealDetails?.likes}
-            {...register("Likes")}
-          />
-        </FormControl>
-
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="Reviews"
-            label="Reviews"
-            name="Reviews"
-            type="number"
-            autoFocus
-            defaultValue={mealDetails?.reviews}
-            {...register("Reviews")}
-          />
-        </FormControl>
-
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="DistributorName"
-            label="Distributor Name"
-            name="DistributorName"
-            autoFocus
-            defaultValue={mealDetails?.adminName}
-            {...register("DistributorName")}
-          />
-        </FormControl>
-
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            variant="filled"
-            margin="normal"
-            fullWidth
-            id="DistributorEmail"
-            label="Distributor Email"
-            name="DistributorEmail"
-            autoFocus
-            defaultValue={mealDetails?.adminEmail}
-            {...register("DistributorEmail")}
-          />
-        </FormControl>
-
-        <FormControl variant="filled" sx={{ width: "100%" }}>
-          <TextField
-            id="Description"
-            label="Description"
-            multiline
-            margin="normal"
-            rows={4}
-            variant="filled"
-            defaultValue={mealDetails?.description}
-            {...register("Description", { required: true })}
-          />
-          {errors.Description && (
-            <Typography
-              variant="h6"
-              component={"span"}
-              sx={{ fontSize: "1rem" }}
-              color={"secondary"}
-            >
-              Description Title is required
-            </Typography>
-          )}
-        </FormControl>
-
-        <Stack direction={"row"} alignItems={"center"}>
-          <Button
-            sx={{ mt: 0.5, textTransform: "none" }}
-            component="label"
-            variant="outlined"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload Profile Image
-            <VisuallyHiddenInput {...register("mealImage")} type="file" />
-          </Button>
-        </Stack>
-
-        <Stack direction={"row"} spacing={1} alignItems={"center"}>
-          <Typography variant="h6" fontWeight={700}>
-            Add Rating:
-          </Typography>
-          <Rating
-            style={{ maxWidth: 250 }}
-            itemStyles={myStyles}
-            value={rating ? rating : mealDetails?.rating}
-            onChange={setRating}
-          />
-        </Stack>
-
-        <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
-          <AwesomeButton style={{ width: "100%" }} type="primary">
-            Update Meal
-          </AwesomeButton>
-        </Stack>
-      </Box>
+          <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
+            <AwesomeButton style={{ width: "100%" }} type="primary">
+              Update Meal
+            </AwesomeButton>
+          </Stack>
+        </Box>
+      </Stack>
     </Stack>
   );
 };

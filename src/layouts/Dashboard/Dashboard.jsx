@@ -26,6 +26,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Stack,
   Tooltip,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -33,6 +34,7 @@ import logo from "../../assets/logo.png";
 import Orders from "./Orders";
 import Deposits from "./Deposits";
 import Chart from "./Chart";
+import { useTheme } from "@emotion/react";
 
 const drawerWidth = 240;
 
@@ -79,12 +81,19 @@ const Drawer = styled(MuiDrawer, {
     }),
   },
 }));
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const [userRole, isUserRoleLoading] = useUserRole();
   const location = useLocation();
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+
   const [open, setOpen] = React.useState(true);
+  React.useEffect(() => {
+    setOpen(isMd);
+  }, [isMd]);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -146,7 +155,7 @@ export default function Dashboard() {
             px: [1],
           }}
         >
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box>
             <img style={{ width: "160px" }} src={logo} alt="logo" />
           </Box>
           <IconButton onClick={toggleDrawer}>
@@ -182,6 +191,60 @@ export default function Dashboard() {
       </Drawer>
 
       {location.pathname === "/dashboard" ? (
+        // <Box
+        //   component="main"
+        //   sx={{
+        //     backgroundColor: (theme) =>
+        //       theme.palette.mode === "light"
+        //         ? theme.palette.grey[100]
+        //         : theme.palette.grey[900],
+        //     flexGrow: 1,
+        //     height: "100vh",
+        //     overflow: "auto",
+        //     justifyContent: "center",
+        //     alignItems: "center",
+        //     display: "flex",
+        //     width: "100%",
+        //     my: 3,
+        //   }}
+        // >
+        //   <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        // <Grid container spacing={3}>
+        //   {/* Chart */}
+        //   <Grid item xs={12} md={8} lg={9}>
+        //     <Paper
+        //       sx={{
+        //         p: 2,
+        //         display: "flex",
+        //         flexDirection: "column",
+        //         height: 240,
+        //       }}
+        //     >
+        //       <Chart />
+        //     </Paper>
+        //   </Grid>
+        //   {/* Recent Deposits */}
+        //   <Grid item xs={12} md={4} lg={3}>
+        //     <Paper
+        //       sx={{
+        //         p: 2,
+        //         display: "flex",
+        //         flexDirection: "column",
+        //         height: 240,
+        //       }}
+        //     >
+        //       <Deposits />
+        //     </Paper>
+        //   </Grid>
+        //   {/* Recent Orders */}
+        //   <Grid item xs={12}>
+        //     <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+        //       <Orders />
+        //     </Paper>
+        //   </Grid>
+        // </Grid>
+        //   </Container>
+        // </Box>
         <Box
           component="main"
           sx={{
@@ -195,8 +258,9 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
+          <Container maxWidth="xl">
+            <Stack justifyContent={'center'} alignItems={'center'} sx={{minHeight: "calc(100vh - 64px)"}}>
+            <Grid container spacing={3} sx={{my: 3}}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -210,7 +274,7 @@ export default function Dashboard() {
                   <Chart />
                 </Paper>
               </Grid>
-              {/* Recent Deposits */}
+              {/* Total Price */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
@@ -223,13 +287,14 @@ export default function Dashboard() {
                   <Deposits />
                 </Paper>
               </Grid>
-              {/* Recent Orders */}
+              {/* Requested Meals */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <Orders />
                 </Paper>
               </Grid>
             </Grid>
+            </Stack>
           </Container>
         </Box>
       ) : (

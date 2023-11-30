@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../api/useUserRole";
 import useRequestedMeals from "../../api/useRequestedMeals";
 import { Link } from "react-router-dom";
+import { TableContainer } from "@mui/material";
 
 export default function Orders() {
   const { user } = useAuth();
@@ -19,15 +20,15 @@ export default function Orders() {
   } else {
     userEmail = user?.email;
   }
-  const [requestedMeal] = useRequestedMeals(userEmail, 1, 8, "");
-  console.log(requestedMeal);
+  const [requestedMeal] = useRequestedMeals(userEmail, 1, 6, "");
   return (
     <React.Fragment>
       <Title>
         {userRole.userRole === "Admin" ? "All Serve Meals" : "Requested Meals"}
       </Title>
+      <TableContainer>
       <Table size="small">
-        <TableHead>
+        <TableHead >
           <TableRow>
             <TableCell>Meal Title</TableCell>
             <TableCell>Likes Count</TableCell>
@@ -35,7 +36,7 @@ export default function Orders() {
             <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody >
           {requestedMeal?.data?.map((row) => (
             <TableRow key={row?._id}>
               <TableCell>{row?.mealTitle}</TableCell>
@@ -46,13 +47,14 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
+      </TableContainer>
       {userRole.userRole === "Admin" ? (
         <Link style={{ marginTop: "10px" }} to={"/dashboard/serve-meals"}>
           See more serve meals
         </Link>
       ) : (
         <Link style={{ marginTop: "10px" }} to={"/dashboard/requested-meals"}>
-          See more requested meals
+          See all requested meals
         </Link>
       )}
     </React.Fragment>

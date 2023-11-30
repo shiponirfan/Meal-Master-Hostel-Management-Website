@@ -144,14 +144,14 @@ const AddMeal = () => {
     <Stack
       sx={{
         width: "100%",
-        height: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 64px)",
         justifyContent: "center",
       }}
     >
       <Stack
         sx={{
           bgcolor: "white",
-          p: 6,
+          p: {xs: 2, sm: 3, md: 6},
           borderRadius: 3,
         }}
       >
@@ -160,7 +160,7 @@ const AddMeal = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <Grid container columnSpacing={3}>
-            <Grid item sx={12} md={6}>
+            <Grid item xs={12} sm={6} md={6}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -184,7 +184,7 @@ const AddMeal = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={6}>
+            <Grid item xs={12} sm={6} md={6}>
               <FormControl
                 margin="normal"
                 variant="filled"
@@ -214,7 +214,7 @@ const AddMeal = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -239,7 +239,7 @@ const AddMeal = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <Autocomplete
                   onChange={(event, value) => setMealIngredientsData(value)}
@@ -274,7 +274,7 @@ const AddMeal = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={1}>
+            <Grid item xs={12} sm={6} md={3} lg={1}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -290,7 +290,7 @@ const AddMeal = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={1}>
+            <Grid item xs={12} sm={6} md={3} lg={1}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -307,7 +307,7 @@ const AddMeal = () => {
               </FormControl>
             </Grid>
 
-            <Grid item sx={12} md={2}>
+            <Grid item xs={12} sm={6} md={6} lg={2}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -322,7 +322,7 @@ const AddMeal = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={2}>
+            <Grid item xs={12} sm={6} md={6} lg={2}>
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <TextField
                   variant="filled"
@@ -337,7 +337,7 @@ const AddMeal = () => {
                 />
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={12}>
+            <Grid item xs={12} sm={12} md={12}>
               <FormControl variant="filled" sx={{ width: "100%", mb: 2 }}>
                 <TextField
                   id="Description"
@@ -360,8 +360,8 @@ const AddMeal = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item sx={12} md={6}>
-              <Stack direction={"row"} alignItems={"center"}>
+            <Grid item xs={12} md={12} lg={6}>
+              <Stack direction={{xs: 'column', sm: "row"}} alignItems={"center"}>
                 <Button
                   sx={{ mt: 0.5, textTransform: "none" }}
                   component="label"
@@ -386,9 +386,9 @@ const AddMeal = () => {
                 )}
               </Stack>
             </Grid>
-            <Grid item sx={12} md={6}>
-              <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                <Typography variant="h6" fontWeight={700}>
+            <Grid item xs={12} md={12} lg={6}>
+              <Stack direction={{xs: 'column', sm: "row"}} sx={{mt: {xs: 1.5, sm: 0}}} spacing={1} alignItems={"center"}>
+                <Typography  variant="h6" fontWeight={700}>
                   Add Rating:
                 </Typography>
                 <Rating
@@ -401,7 +401,11 @@ const AddMeal = () => {
             </Grid>
           </Grid>
 
-          <Stack direction={"row"} spacing={6} sx={{ mt: 1.6 }}>
+          <Stack
+            direction={{ sm: "row", xs: "column" }}
+            spacing={{ sm: 6, xs: 2 }}
+            sx={{ mt: 1.6 }}
+          >
             <AwesomeButton
               onPress={() => {
                 setSubmitTypes("addMeal");
